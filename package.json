@@ -1,0 +1,111 @@
+{
+  "name": "hasura-cli",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "link-module-alias": "link-module-alias",
+    "husky-skip": "HUSKY_SKIP_HOOKS=1",
+    "lint:js": "eslint --ext js --ext md",
+    "lint:ts": "eslint --ext ts --ext md",
+    "lint:code": "eslint --ext js --ext ts --ext md",
+    "lint:code:ci": "yarn lint:code . --format junit",
+    "lint:md": "markdownlint --ignore node_modules --ignore .git --ignore CHANGELOG.md",
+    "lint": "yarn lint:code . && yarn lint:md .",
+    "format:js": "yarn lint:js --fix",
+    "format:ts": "yarn lint:ts --fix",
+    "format": "yarn lint:code . --fix && yarn lint:md .",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
+    "build": "shx rm -rf dist/* && tsc",
+    "build:watch": "tsc -w",
+    "build:incremental": "tsc -i",
+    "prepublishOnly": "yarn build",
+    "dev": "concurrently 'tsc -w -i' 'nodemon dist/index.js'",
+    "start": "node dist/index.js"
+  },
+  "_moduleAliases": {
+    "#": "dist"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn format:js",
+      "git add"
+    ],
+    "*.ts": [
+      "yarn format:ts",
+      "git add"
+    ],
+    "*.md": [
+      "yarn lint:md"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "commitizen": "^4.0.3",
+    "concurrently": "^4.1.2",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "5.3.0",
+    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "^22.9.0",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": ">=1",
+    "jest": "^24.8.0",
+    "jest-junit": "^7.0.0",
+    "link-module-alias": "^1.2.0",
+    "lint-staged": ">=8",
+    "markdownlint-cli": "^0.17.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.18.2",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "main": "dist/index.js",
+  "typescript:main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jjangga0214/hasura-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jjangga0214/hasura-cli"
+  },
+  "homepage": "https://github.com/jjangga0214/hasura-cli",
+  "author": {
+    "name": "Gil B. Chan",
+    "email": "bnbcmindnpass@gmail.com",
+    "url": "https://github.com/jjangga0214"
+  },
+  "keywords": [
+    "boilerplate",
+    "scaffold",
+    "skeleton",
+    "starter",
+    "typescript",
+    "ts"
+  ]
+}

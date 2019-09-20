@@ -1,0 +1,21 @@
+coverage:
+  parsers:
+    javascript:
+      enable_partials: yes
+  status:
+    project:
+      default: off
+      unit:
+        flags: unit
+        target: 65%
+      # integration:
+      #   flags: integration
+      #   target: 40%
+
+flags:
+  unit:
+    paths:
+      - src/
+  integration:
+    paths:
+      - src/
