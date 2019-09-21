@@ -1,8 +1,8 @@
 import axios from 'axios'
 import fs from 'fs'
 
-export async function download(url: string, path: string): Promise<void> {
-  const writer = fs.createWriteStream(path)
+export async function download(url: string, dest: string): Promise<void> {
+  const writer = fs.createWriteStream(dest)
 
   const res = await axios({
     url,
@@ -23,14 +23,16 @@ export async function download(url: string, path: string): Promise<void> {
 }
 
 export async function getUrl(
-  tag: string,
+  tag: string, // e.g. "v1.0.0-beta.6" or "v1.0.0-alpha29"
   platform: string = process.platform,
 ): Promise<string> {
   const res = await axios.get<Release>(
     `https://api.github.com/repos/hasura/graphql-engine/releases/tags/${tag}`,
   )
   const { assets } = res.data
-  const asset = assets.find(e => e.name.includes(platform))
+  const asset = assets.find(a =>
+    a.name.includes(platform === 'win32' ? 'windows' : platform),
+  )
   return asset.url
 }
 
