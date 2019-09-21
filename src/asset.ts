@@ -17,7 +17,10 @@ export async function download(url: string, dest: string): Promise<void> {
   res.data.pipe(writer)
 
   return new Promise((resolve, reject): void => {
-    writer.on('finish', resolve)
+    writer.on('finish', (): void => {
+      fs.chmodSync(dest, '777')
+      resolve()
+    })
     writer.on('error', reject)
   })
 }
