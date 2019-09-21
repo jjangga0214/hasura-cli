@@ -8,14 +8,14 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier', 'jest', 'markdown'],
   extends: [
-    'prettier/@typescript-eslint',
-    'airbnb-base',
-    'prettier',
     'plugin:jest/all',
-    'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'airbnb-base',
+    'prettier',
     'plugin:import/typescript',
+    'prettier/@typescript-eslint',
+    'plugin:@typescript-eslint/recommended',
   ],
   rules: {
     'prettier/prettier': 'error',
