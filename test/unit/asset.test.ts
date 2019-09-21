@@ -38,7 +38,7 @@ describe('asset', () => {
     expect.hasAssertions()
     const url =
       'https://github.com/hasura/graphql-engine/releases/download/v1.0.0-beta.6/cli-hasura-linux-amd64'
-    const dest = './dist/hasura'
+    const dest = './tmp/hasura'
     await download(url, dest)
     const { stdout } = await exec(`${dest} version --skip-update-check`)
     expect(stdout).toContain('v1.0.0-beta.6')
