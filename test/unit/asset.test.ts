@@ -1,5 +1,8 @@
+import util from 'util'
 /* eslint-disable import/no-unresolved */
-import { getUrl } from '#/asset'
+import { download, getUrl } from '#/asset'
+
+const exec = util.promisify(require('child_process').exec)
 
 describe('asset', () => {
   const urlById = (id: number): string =>
@@ -30,4 +33,14 @@ describe('asset', () => {
       urlById(9724596),
     )
   })
+
+  it('download', async () => {
+    expect.hasAssertions()
+    const url =
+      'https://github.com/hasura/graphql-engine/releases/download/v1.0.0-beta.6/cli-hasura-linux-amd64'
+    const dest = './dist/hasura'
+    await download(url, dest)
+    const { stdout } = await exec(`${dest} version --skip-update-check`)
+    expect(stdout).toContain('v1.0.0-beta.6')
+  }, 240000)
 })
