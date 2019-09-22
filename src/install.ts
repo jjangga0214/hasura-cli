@@ -43,7 +43,7 @@ export async function install({
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
-{blue Installing} {bold Hasura CLI binary} {green ${tag}} from {bold ${url}}
+{blue Downloading} {bold Hasura CLI binary} {green ${tag}} from {bold ${url}}
 `,
   )
   const dest = await download({
@@ -54,7 +54,7 @@ export async function install({
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
-{green Success!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
+{green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
 `,
   )
   return dest
