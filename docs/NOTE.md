@@ -8,6 +8,10 @@ This project is tested only with node's LTS versions specified in [.package.json
 
 Only yarn is officially considered on development environment.
 
+### Scripts
+
+Some scripts in package.json explicitly call yarn as well.
+
 ### Lock file
 
 Therefore this project only maintains _yarn.lock_, which **yarn** generates. Do not commit _package-lock.json_, which **npm** generates.

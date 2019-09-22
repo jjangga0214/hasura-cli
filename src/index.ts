@@ -7,7 +7,12 @@ const {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require('../package.json')
 
-if (process.env.HASURA_CLI_NOT_INSTALL !== 'true') {
+if (process.env.HASURA_CLI_NOT_INSTALL === 'true') {
+  console.log(chalk`
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
+{blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_NOT_INSTALL} is {bold 'true'}, therefore {bold hasura-cli} doesn't do anything. 
+  `)
+} else {
   ;(async (): Promise<void> => {
     try {
       await install({

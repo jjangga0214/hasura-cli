@@ -70,6 +70,10 @@ Or configure npm scripts on package.json in the way you want.
 
 Please read [NOTE.md](./docs/NOTE.md), before getting started.
 
+### HASURA_CLI_NOT_INSTALL
+
+`src/index.ts` checks `process.env.HASURA_CLI_NOT_INSTALL`. If it's `"true"` (string), then **hasura-cli** would not do anything. Otherwise (`HASURA_CLI_NOT_INSTALL` is not set, or its value id not `"true"`), it automatically download Hasura CLI. So you can set the environment variable to prevent unwanted download on development environment.
+
 ### Getting started
 
 Install dependencies.
