@@ -59,7 +59,7 @@ module.exports = {
   moduleDirectories: ['node_modules', 'src'],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
