@@ -1,29 +1,35 @@
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
-/* eslint-disable import/no-unresolved */
 import { install } from '#/install'
 
 const exec = util.promisify(require('child_process').exec)
 
 describe('install', () => {
-  it('install', async () => {
+  it('install, exec, and check versions of every cli', async () => {
     expect.hasAssertions()
 
+    const betas = [...Array(6).keys()]
+      .map(i => i + 1)
+      .map(i => `1.0.0-beta.${i}`)
+    const alphas = [...Array(45).keys()]
+      .map(i => i + 1)
+      .map(i => `1.0.0-alpha${i < 10 ? `0${i}` : i}`)
     for (const version of [
-      '1.0.0-beta.6',
-      '1.0.0-beta.1',
-      '1.0.0-alpha45',
-      '1.0.0-alpha29',
-      '1.0.0-alpha01',
+      // '1.0.0-beta.6',
+      // '1.0.0-beta.1',
+      // '1.0.0-alpha45',
+      // '1.0.0-alpha29',
+      // '1.0.0-alpha01',
+      ...betas,
+      ...alphas,
     ]) {
-      console.log(`Downloading ${version} ...`)
       const dest = await install({
         version,
         destDir: path.resolve(__dirname, 'tmp'),
         fileName: `${Date.now()}-${version}`,
+        verbose: true,
       })
-      console.log(`Download completed.`)
       const { stdout } = await exec(`${dest} version`)
       console.log(stdout)
 
@@ -39,5 +45,5 @@ describe('install', () => {
       }
       await fs.unlinkSync(dest)
     }
-  }, 240000)
+  }, 24000000)
 })

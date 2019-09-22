@@ -6,7 +6,7 @@
     "node": ">=8"
   },
   "scripts": {
-    "postinstall": "shx mkdir -p dist && link-module-alias",
+    "postinstall": "shx mkdir -p dist && link-module-alias && node dist/index.js",
     "link-module-alias": "link-module-alias",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "lint:js": "eslint --ext js --ext md",
@@ -89,6 +89,9 @@
   "files": [
     "dist"
   ],
+  "bin": {
+    "hasura": "./hasura"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jjangga0214/hasura-cli.git"
