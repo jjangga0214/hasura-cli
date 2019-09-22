@@ -57,9 +57,9 @@ Or configure npm scripts on package.json in the way you want.
 {
   "scripts": {
     "hasura:_": "hasura --project hasura --endpoint $HASURA_ENDPOINT",
-    "hasura:console": "dotenv -e .env.dev -- npm hasura:_ console",
-    "hasura:pull": "dotenv -e .env.dev -- npm hasura:_ migrate create --from-server",
-    "hasura:push:prod": "dotenv -e .env.prod -- npm hasura:migrate:_ apply"
+    "hasura:console": "npm hasura:_ console",
+    "hasura:pull": "npm hasura:_ migrate create --from-server",
+    "hasura:push": "npm hasura:_ migrate apply"
   }
 }
 ```
