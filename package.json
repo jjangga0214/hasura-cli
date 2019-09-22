@@ -6,7 +6,7 @@
     "node": ">=8"
   },
   "scripts": {
-    "postinstall": "shx mkdir -p dist && link-module-alias && node dist/index.js",
+    "postinstall": "link-module-alias && node dist/index.js",
     "link-module-alias": "link-module-alias",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "lint:js": "eslint --ext js --ext md",
@@ -24,7 +24,7 @@
     "build:watch": "tsc -w",
     "build:incremental": "tsc -i",
     "prepublishOnly": "yarn build",
-    "dev": "concurrently 'tsc -w -i' 'nodemon dist/index.js'",
+    "dev": "shx mkdir -p dist && link-module-alias && concurrently 'tsc -w -i' 'nodemon dist/index.js'",
     "start": "node dist/index.js"
   },
   "_moduleAliases": {

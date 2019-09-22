@@ -80,10 +80,10 @@ Please read [NOTE.md](./docs/NOTE.md), before getting started.
 
 ### Getting started
 
-Install dependencies.
+Install dependencies. Lifecycle script `postinstall` is only for clients, installing Hasura CLI. So, ignore it with `--ignore-scripts` option. It should also be used on CI.
 
 ```bash
-yarn install
+yarn install --ignore-scripts
 ```
 
 On development, run
