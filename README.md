@@ -64,6 +64,10 @@ Or configure npm scripts on package.json in the way you want.
 }
 ```
 
+## Tests
+
+This package is tested on Ubuntu LTS (latest), macOS (latest), and Windows (latest and 2016) with node version 8, 9, 10, 11, 12. So there're total `4(os) * 5(node) = 20` tests. Each of latest OS are ubuntu-18.04, macOS-10.14, and windows-2019 as of writing, but will be automatically updated to new ones if available. Generally, it would work on 64 bits architecture of any Linux, macOS, and Windows.
+
 ## Development (Contribution)
 
 ### Note

@@ -1,0 +1,46 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [8, 9, 10, 11, 12]
+        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: yarn install
+        env:
+          CI: true
+
+      - name: Test
+        run: |
+          yarn test:coverage \
+          --ci \
+          --coverageDirectory ./reports/coverage \
+
+      # - name: Upload Test Coverage To Codecov
+      #   uses: codecov/codecov-action@v1.0.2
+      #   with:
+      #     token: ${{secrets.CODECOV_TOKEN}}
+      #     file: reports/coverage/*.json
+      #     flags: holistic
+
+      - name: Lint
+        # run: yarn lint:code:ci --output-file ./reports/lint.xml && yarn lint:md .
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+# TODO: publish (as a job depending on 'build' job. Check git version tag(e.g. v1.0.0-beta.7))

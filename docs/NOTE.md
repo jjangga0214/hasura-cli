@@ -1,9 +1,5 @@
 # Note
 
-## Node Version
-
-This project is tested only with node's LTS versions specified in [.package.json](./.package.json). For example, if its `engines` option is set to be `>= 8`, only `8.x`, `10.x` and `12.x` are tested. Using other versions of node means you are taking your own risk.
-
 ## Yarn
 
 Only yarn is officially considered on development environment.
