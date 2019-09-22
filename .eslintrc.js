@@ -37,4 +37,9 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
   },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
 }
