@@ -1,4 +1,5 @@
 import path from 'path'
+import chalk from 'chalk'
 import { getUrl, download } from './asset'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require('../package.json')
@@ -40,7 +41,10 @@ export async function install({
     }
   }
   log(
-    `hasura-cli@${versionFromPacakgeJson()}: Downloading Hasura CLI binary (version=${tag}) from "${url}"...`,
+    chalk`
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
+{blue Installing} {bold Hasura CLI binary} {green ${tag}} from {bold ${url}}
+`,
   )
   const dest = await download({
     url,
@@ -48,7 +52,10 @@ export async function install({
     fileName,
   })
   log(
-    `hasura-cli@${versionFromPacakgeJson()}: Hasura CLI binary (version=${tag}) is downloaded to ${dest}`,
+    chalk`
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
+{green Success!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
+`,
   )
   return dest
 }
