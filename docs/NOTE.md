@@ -63,7 +63,11 @@ Some commands handling **node_modules** like `yarn remove` or `yarn upgrade` can
 
 ## Dev
 
-`yarn dev` uses [concurrently](https://github.com/kimmobrunfeldt/concurrently) and [nodemon](https://github.com/remy/nodemon). [ts-node-dev](https://github.com/whitecolor/ts-node-dev) is not preferred due to an [issue](https://github.com/whitecolor/ts-node-dev/issues/95) of **paths** field on tsconfig.json. `yarn dev` is only for development iteration, while `yarn start` is only for production.
+`yarn dev` and `yarn dev:build` are only for development iteration.
+
+`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting, while [tsconfig-paths](https://github.com/dividab/tsconfig-paths) loads modules at runtime by respecting `baseUrl` and `paths` field on tsconfig.json.
+
+`yarn dev:build` logically does the same thing at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and run (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simualtaneously.
 
 ## Git hooks
 

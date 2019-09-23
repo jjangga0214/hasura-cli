@@ -24,7 +24,8 @@
     "build:watch": "tsc -w",
     "build:incremental": "tsc -i",
     "prepublishOnly": "yarn build",
-    "dev": "shx mkdir -p dist && link-module-alias && concurrently 'tsc -w -i' 'nodemon dist/index.js'",
+    "dev:build": "shx mkdir -p dist && link-module-alias && concurrently 'tsc -w -i' 'nodemon dist/index.js'",
+    "dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
   },
   "_moduleAliases": {
@@ -79,6 +80,7 @@
     "prettier": "^1.18.2",
     "shx": "^0.3.2",
     "ts-jest": "^24.1.0",
+    "ts-node-dev": "^1.0.0-pre.43",
     "typescript": "^3.6.3"
   },
   "dependencies": {
