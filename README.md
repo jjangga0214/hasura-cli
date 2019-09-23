@@ -1,6 +1,6 @@
 # hasura-cli
 
-Npm package wrapping **Hasura CLI**.
+An npm package that automatically installs and wraps **Hasura CLI** binary in isolated manner
 
 [![license](https://img.shields.io/badge/license-MIT-ff4081.svg?style=flat-square&labelColor=black)](./LICENSE)
 [![test](https://img.shields.io/badge/test-jest-7c4dff.svg?style=flat-square&labelColor=black)](./jest.config.js)
