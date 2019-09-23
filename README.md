@@ -44,7 +44,7 @@ yarn add -D hasura-cli@1.0.0-beta.6
 
 ```bash
 # global installation
-npm install -g hasura-cli
+npm install --global hasura-cli
 # or
 yarn global add hasura-cli
 ```
