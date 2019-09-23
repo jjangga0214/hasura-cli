@@ -24,7 +24,7 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 ## Installation
 
-You can just simply download it through npm or yarn. Note that the package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli).
+You can just simply download it through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
 ```bash
 # latest version
