@@ -91,7 +91,7 @@ First, create `.env` file, and configure it as you want.
 cp .env.example .env
 ```
 
-You can simply populate the variables by executing `yarn dev` or `yarn dev:no-rewpawn`. Otherwise, you have to manually feed them (e.g. `dotenv -- <your command>`). That's because this project doesn't use [`dotenv`](https://github.com/motdotla/dotenv), but [`dotenv-cli`](https://github.com/entropitor/dotenv-cli). So, the application does not read `.env` by itself.
+You can simply populate the variables by executing `yarn dev` or `yarn dev:no-respawn`. Otherwise, you have to manually feed them (e.g. `dotenv -- <your command>`). That's because this project doesn't use [`dotenv`](https://github.com/motdotla/dotenv), but [`dotenv-cli`](https://github.com/entropitor/dotenv-cli). So, the application does not read `.env` by itself.
 
 #### `HASURA_CLI_INSTALL` (boolean)
 
@@ -118,7 +118,7 @@ On development, you can run
 ```bash
 yarn dev
 # or
-yarn dev:no-rewpawn
+yarn dev:no-respawn
 # or
 yarn dev:build
 ```
