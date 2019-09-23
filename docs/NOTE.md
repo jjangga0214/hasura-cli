@@ -71,10 +71,6 @@ Note that `#` is used instead of more conventional `@` due to [an issue](https:/
 
 `yarn dev` and `yarn dev:build` are only for development iteration.
 
-`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting, while [tsconfig-paths](https://github.com/dividab/tsconfig-paths) loads modules at runtime by respecting `baseUrl` and `paths` field on tsconfig.json.
-
-`yarn dev:build` logically does the same thing at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and run (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simualtaneously.
-
 ## Git hooks
 
 There are git hooks, you can see them in package.json under `husky` field. To ignore hooks registered by husky, run `HUSKY_SKIP_HOOKS=1 <command-you-want>` or `yarn husky-skip <command-you-want>`. Note that shell specific configuration (e.g. aliases) might be only avaliable with the former one, as `yarn` could use a different shell (e.g. `/bin/sh`) from your default one.

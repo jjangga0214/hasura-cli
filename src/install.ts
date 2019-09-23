@@ -20,8 +20,8 @@ interface InstallOptions {
 }
 
 export const defaultInstallOptions = {
-  destDir: '.',
-  fileName: 'hasura',
+  destDir: process.env.HASURA_CLI_DEST_DIR || '.',
+  fileName: process.env.HASURA_CLI_DEST_FILENAME || 'hasura',
   dest(): string {
     return path.resolve(this.destDir, this.fileName)
   },

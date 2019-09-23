@@ -7,12 +7,12 @@ const {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require('../package.json')
 
-if (process.env.HASURA_CLI_NOT_INSTALL === 'true') {
-  console.log(chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
-{blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_NOT_INSTALL} is {bold 'true'}, therefore {bold hasura-cli} doesn't do anything. 
-  `)
-} else {
+const HASURA_CLI_INSTALL =
+  process.env.HASURA_CLI_INSTALL === undefined
+    ? true
+    : process.env.HASURA_CLI_INSTALL === 'true'
+
+if (HASURA_CLI_INSTALL) {
   ;(async (): Promise<void> => {
     try {
       await install({
@@ -29,4 +29,9 @@ You can report the issue on {bold ${issueUrl}} with error message.
       throw err
     }
   })()
+} else {
+  console.log(chalk`
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
+{blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_INSTALL} is {bold ${`${HASURA_CLI_INSTALL}`}}, therefore {bold hasura-cli} doesn't do anything. 
+  `)
 }

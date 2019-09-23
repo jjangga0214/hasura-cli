@@ -81,9 +81,29 @@ This package is tested on Ubuntu LTS (latest), macOS (latest), and Windows (late
 
 Please read [NOTE.md](./docs/NOTE.md), before getting started.
 
-### `HASURA_CLI_NOT_INSTALL`
+### Environment variables
 
-`src/index.ts` checks `process.env.HASURA_CLI_NOT_INSTALL`. If it's `"true"` (string), then `src/index.ts` would not install the cli. Otherwise (when `HASURA_CLI_NOT_INSTALL` is not set, or its value is not `"true"`), it automatically downloads Hasura CLI. So you can set the environment variable to prevent unwanted download on development environment.
+Environment variables are intended to be only used on development environment.
+
+First, create `.env` file, and configure it as you want.
+
+```bash
+cp .env.example .env
+```
+
+Values in `.env.example` represent default values. Update them if you change default values in source code.
+
+#### `HASURA_CLI_INSTALL` (boolean)
+
+Whether `src/index.ts` would install the cli. So you can set it false to prevent unwanted downloads.
+
+#### `HASURA_CLI_DEST_DIR` (string)
+
+A directory under which Hasura CLI should be installed.
+
+#### `HASURA_CLI_DEST_FILENAME` (string)
+
+A file name of Hasura CLI.
 
 ### Getting started
 
@@ -93,13 +113,23 @@ Install dependencies. Lifecycle script `postinstall` is only for clients, instal
 yarn install --ignore-scripts
 ```
 
-On development, run
+On development, you can run
 
 ```bash
-yarn dev # watches source code and restarts a process when file changes.
+yarn dev
+# or
+yarn dev:no-rewpawn
+# or
+yarn dev:build
 ```
 
-To manually test compiled js, run
+`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting, while [tsconfig-paths](https://github.com/dividab/tsconfig-paths) loads modules at runtime by respecting `baseUrl` and `paths` field on tsconfig.json.
+
+`yarn dev:no-rewpawn` does the same thing except it does not restart.
+
+`yarn dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and run (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simualtaneously.
+
+To manually test compiled js, you can run
 
 ```bash
 yarn build # compiles ts to js
