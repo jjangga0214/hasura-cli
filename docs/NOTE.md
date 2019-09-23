@@ -10,31 +10,25 @@ Some scripts in package.json explicitly call yarn as well.
 
 ### Lock file
 
-Therefore this project only maintains _yarn.lock_, which yarn generates. Do not commit _package-lock.json_, which npm generates.
+Therefore, this project only maintains _yarn.lock_, which yarn generates. Do not commit _package-lock.json_, which npm generates.
 
 ### Version
 
 The version of yarn should satisfy the condition specified on package.json's `engines.yarn` field.
 
-## Module aliases
+## Module alias
 
-Module Aliases should be consistent between node, typescript, and jest.
+Module alias is only used for tests to load source modules. Every source modules under **src** directory do only use relative paths each other. So, compiled js files doesn't depend on module alias resolution.
 
-<!-- markdownlint-disable MD024 -->
-
-### Node
-
-<!-- markdownlint-enable MD024 -->
-
-[`link-module-alias`](https://github.com/Rush/link-module-alias) is used for creating module aliases (by creating symlink in node_modules) for node. Refer `_moduleAliases` field in package.json.
+Thus, module aliases should be consistent between configurations of typescript, jest, and eslint.
 
 ### Typescript
 
-For typescript, corresponding configurations are done by `baseUrl` and `paths` fields in tsconfig.json.
+For typescript, corresponding configuration is done by `baseUrl` and `paths` fields in tsconfig.json.
 
 ### Jest
 
-See `moduleNameMapper` for corresponding configuration on jest.config.js.
+See `moduleNameMapper` field for corresponding configuration on jest.config.js.
 
 For example,
 
@@ -49,13 +43,25 @@ For example,
 
 means **#/** will be matched to **src/**.
 
+### Eslint
+
+`eslint-plugin-import` and `eslint-import-resolver-typescript` respect tsconfig.json by the configuration below in .eslintrc.js.
+
+```json
+{
+  settings: {
+    "import/resolver": {
+      typescript: {} // this loads <rootdir>/tsconfig.json to eslint
+    },
+  },
+}
+```
+
+This makes it not complaining about module aliases.
+
 ### Unconventional symbol
 
-Note that `#` is used instead of somewhat conventional `@` due to [an issue](https://github.com/Rush/link-module-alias/issues/3) of `link-module-alias`.
-
-### Caution
-
-Some commands handling **node_modules** like `yarn remove` or `yarn upgrade` can cause deletion of symlink(s) (but not the original source code). When this happens, simply executing `npx link-module-alias` would make symlink(s) again. For convenience of shell autocomplete, there's an equivalent script `yarn link-module-alias` as well.
+Note that `#` is used instead of more conventional `@` due to [an issue](https://github.com/Rush/link-module-alias/issues/3) of `link-module-alias`.
 
 ## Test
 

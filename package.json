@@ -6,8 +6,7 @@
     "node": ">=8"
   },
   "scripts": {
-    "postinstall": "link-module-alias && node dist/index.js",
-    "link-module-alias": "link-module-alias",
+    "postinstall": "node dist/index.js",
     "husky-skip": "cross-env HUSKY_SKIP_HOOKS=1",
     "lint:js": "eslint --ext js --ext md",
     "lint:ts": "eslint --ext ts --ext md",
@@ -27,9 +26,6 @@
     "dev:build": "shx mkdir -p dist && link-module-alias && concurrently 'tsc -w -i' 'nodemon dist/index.js'",
     "dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register src/index.ts",
     "start": "node dist/index.js"
-  },
-  "_moduleAliases": {
-    "#": "dist"
   },
   "husky": {
     "hooks": {
@@ -73,7 +69,6 @@
     "husky": ">=1",
     "jest": "^24.8.0",
     "jest-junit": "^7.0.0",
-    "link-module-alias": "^1.2.0",
     "lint-staged": ">=8",
     "markdownlint-cli": "^0.17.0",
     "nodemon": "^1.19.2",
