@@ -16,6 +16,7 @@ interface InstallOptions {
   version?: string
   destDir?: string
   fileName?: string
+  platform?: string
   verbose?: boolean
 }
 
@@ -31,6 +32,7 @@ export async function install({
   version = versionFromPacakgeJson(),
   destDir = defaultInstallOptions.destDir,
   fileName = defaultInstallOptions.fileName,
+  platform = process.platform,
   verbose = false,
 }: InstallOptions = {}): Promise<string> {
   const tag = tagFromVersion(version)
@@ -40,6 +42,10 @@ export async function install({
       console.log(msg)
     }
   }
+  const adjustedFileName =
+    platform === 'win32' && !fileName.endsWith('.exe')
+      ? `${fileName}.exe`
+      : fileName
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
@@ -49,8 +55,9 @@ export async function install({
   const dest = await download({
     url,
     destDir,
-    fileName,
+    fileName: adjustedFileName,
   })
+
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
