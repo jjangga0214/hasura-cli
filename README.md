@@ -14,17 +14,17 @@ Npm package wrapping **Hasura CLI**.
 
 ## Why?
 
-**Hasura CLI**(not this package) is a compiled binary originally written in go. But just installing it on your system would cause some problems.
+The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli), which is not this package, is a compiled binary originally written in go. But just installing it on your system would cause some problems.
 
-1. Difficult to fix hasura version differently on multiple projects.
+1. Difficult to use different hasura versions on multiple projects.
 2. Inconvenient to ensure every colleagues having same version installed.
 3. Manual installation.
 
-**hasura-cli** solves them. It automatically downloads the CLI and exposes the command `hasura`. Downloaded CLI would be isolated, making it only dedicated to the "project" that installed it.
+**hasura-cli** solves them. It automatically downloads the CLI and exposes the command `hasura`. Downloaded CLI would be isolated, making it only dedicated to the "project" that installed it. Of course, you can install it as global package as well.
 
 ## Installation
 
-This package follows version of the original **Hasura CLI**, written in go. You can just simply download it through npm or yarn.
+You can just simply download it through npm or yarn. Note that the package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli).
 
 ```bash
 # latest version
@@ -40,6 +40,13 @@ yarn add -D hasura-cli
 
 # or specific version
 yarn add -D hasura-cli@1.0.0-beta.6
+```
+
+```bash
+# global installation
+npm install -g hasura-cli
+# or
+yarn global add hasura-cli
 ```
 
 Then you will be able to run hasura command.
@@ -74,9 +81,9 @@ This package is tested on Ubuntu LTS (latest), macOS (latest), and Windows (late
 
 Please read [NOTE.md](./docs/NOTE.md), before getting started.
 
-### HASURA_CLI_NOT_INSTALL
+### `HASURA_CLI_NOT_INSTALL`
 
-`src/index.ts` checks `process.env.HASURA_CLI_NOT_INSTALL`. If it's `"true"` (string), then **hasura-cli** would not do anything. Otherwise (`HASURA_CLI_NOT_INSTALL` is not set, or its value id not `"true"`), it automatically download Hasura CLI. So you can set the environment variable to prevent unwanted download on development environment.
+`src/index.ts` checks `process.env.HASURA_CLI_NOT_INSTALL`. If it's `"true"` (string), then `src/index.ts` would not install the cli. Otherwise (when `HASURA_CLI_NOT_INSTALL` is not set, or its value is not `"true"`), it automatically downloads Hasura CLI. So you can set the environment variable to prevent unwanted download on development environment.
 
 ### Getting started
 
@@ -92,14 +99,14 @@ On development, run
 yarn dev # watches source code and restarts a process when file changes.
 ```
 
-On productions, run
+To manually test compiled js, run
 
 ```bash
 yarn build # compiles ts to js
-yarn start # runs compiled js
+yarn start # runs dist/index.js
 ```
 
-### Yarn scripts
+### Other scripts
 
 ```bash
 yarn test # runs all tests (against "*.test.ts")
