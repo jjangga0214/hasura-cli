@@ -1,5 +1,6 @@
 import path from 'path'
 import chalk from 'chalk'
+import fs from 'fs'
 import { getUrl, download } from './asset'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require('../package.json')
@@ -42,10 +43,7 @@ export async function install({
       console.log(msg)
     }
   }
-  const adjustedFileName =
-    platform === 'win32' && !fileName.endsWith('.exe')
-      ? `${fileName}.exe`
-      : fileName
+
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
@@ -55,14 +53,20 @@ export async function install({
   const dest = await download({
     url,
     destDir,
-    fileName: adjustedFileName,
+    fileName,
   })
+
+  const adjustedDest =
+    platform === 'win32' && !fileName.endsWith('.exe') ? `${dest}.exe` : dest
+  if (dest !== adjustedDest) {
+    fs.renameSync(dest, adjustedDest)
+  }
 
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
-{green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
+{green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${adjustedDest}}
 `,
   )
-  return dest
+  return adjustedDest
 }
