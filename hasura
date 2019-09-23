@@ -1,0 +1,4 @@
+This file is to be automatically replaced by Hasura CLI binary file by postinstall lifecycle.
+The replacement only have to be processed when a client installs hasura-cli package.
+So, on development, let it be a dummy file like as it is now, 
+and do not commit change of this file to Hasura CLI binary.

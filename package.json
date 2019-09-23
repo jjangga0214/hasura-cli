@@ -90,7 +90,8 @@
   "main": "dist/index.js",
   "typescript:main": "src/index.ts",
   "files": [
-    "dist"
+    "dist",
+    "hasura"
   ],
   "bin": {
     "hasura": "./hasura"
