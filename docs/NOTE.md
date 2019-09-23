@@ -10,7 +10,7 @@ Some scripts in package.json explicitly call yarn as well.
 
 ### Lock file
 
-Therefore this project only maintains _yarn.lock_, which **yarn** generates. Do not commit _package-lock.json_, which **npm** generates.
+Therefore this project only maintains _yarn.lock_, which yarn generates. Do not commit _package-lock.json_, which npm generates.
 
 ### Version
 
@@ -34,30 +34,28 @@ For typescript, corresponding configurations are done by `baseUrl` and `paths` f
 
 ### Jest
 
-See `moduleNameMapper` for corresponding configuration.
+See `moduleNameMapper` for corresponding configuration on jest.config.js.
 
 For example,
 
 ```json
-// A map from regular expressions to module names that allow to stub out resources with a single module
-moduleNameMapper: {
-  '^#/(.*)$': '<rootDir>/src/$1',
+{
+  // A map from regular expressions to module names that allow to stub out resources with a single module
+  moduleNameMapper: {
+  "^#/(.*)$": "<rootDir>/src/$1",
+  }
 }
 ```
 
-means **#/** will be matched to **<rootDir>/src/**.
+means **#/** will be matched to **src/**.
 
-<!-- markdownlint-disable MD024 -->
-
-### Note
-
-<!-- markdownlint-enable MD024 -->
+### Unconventional symbol
 
 Note that `#` is used instead of somewhat conventional `@` due to [an issue](https://github.com/Rush/link-module-alias/issues/3) of `link-module-alias`.
 
 ### Caution
 
-Some commands handling node_modules like `yarn remove` or `yarn upgrade` can cause deletion of symlink(s) (but not the original source code). When this happens, simply executing `npx link-module-alias`, `yarn link-module-alias`, or `yarn install` (calling `link-module-alias` by postinstall) would make symlink(s) again.
+Some commands handling **node_modules** like `yarn remove` or `yarn upgrade` can cause deletion of symlink(s) (but not the original source code). When this happens, simply executing `npx link-module-alias` would make symlink(s) again. For convenience of shell autocomplete, there's an equivalent script `yarn link-module-alias` as well.
 
 ## Test
 
@@ -69,11 +67,11 @@ Some commands handling node_modules like `yarn remove` or `yarn upgrade` can cau
 
 ## Git hooks
 
-There are git hooks, you can see them in package.json under `husky` field. To ignore hooks registered by husky, run `HUSKY_SKIP_HOOKS=1 <command-you-want>` or `yarn husky-skip <command-you-want>`. Note that shell specific configuration (e.g. aliases) might be only applicable with the former one, as `yarn` could use a different shell (e.g. `/bin/sh`) from your default one.
+There are git hooks, you can see them in package.json under `husky` field. To ignore hooks registered by husky, run `HUSKY_SKIP_HOOKS=1 <command-you-want>` or `yarn husky-skip <command-you-want>`. Note that shell specific configuration (e.g. aliases) might be only avaliable with the former one, as `yarn` could use a different shell (e.g. `/bin/sh`) from your default one.
 
 ### Lint-staged
 
-[`lint-staged`](https://github.com/okonet/lint-staged) is used to format staged files, and stage them again (as they would be changed if formatted).
+[lint-staged](https://github.com/okonet/lint-staged) is used to format staged files, and stage them again (as obviously they become 'changed' after formatted).
 
 ### Commitizen
 
@@ -81,4 +79,4 @@ This repo is [**"commitizen-friendly"**](https://github.com/commitizen/cz-cli#if
 
 ### Commitlint
 
-[Commitlint](https://github.com/conventional-changelog/commitlint) lints commit message. [commitlint.config.js](commitlint.config.js) is its configuration file.
+[Commitlint](https://github.com/conventional-changelog/commitlint) lints commit message. [commitlint.config.js](../commitlint.config.js) is its configuration file.
