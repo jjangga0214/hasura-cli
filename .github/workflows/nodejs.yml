@@ -37,6 +37,11 @@ jobs:
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           npm install --global pm2 shx verdaccio
 
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
       - name: Run pm2 On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
@@ -63,6 +68,11 @@ jobs:
         if: startsWith(matrix.os, 'windows') == false 
         run: |
           cd ../hasura-cli-user
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
           
       - name: Test Installation
         run: |
