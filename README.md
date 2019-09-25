@@ -1,4 +1,8 @@
-# hasura-cli
+<!-- markdownlint-disable first-line-heading -->
+
+![hasura-cli](./docs/assets/hasura-cli.svg)
+
+<!-- markdownlint-enable first-line-heading -->
 
 An npm package that automatically installs and wraps **Hasura CLI** binary in isolated manner
 
@@ -24,7 +28,7 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 ## Installation
 
-You can just simply download it through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
+You can just simply instrall hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
 ```bash
 # latest version
@@ -45,7 +49,8 @@ yarn add -D hasura-cli@1.0.0-beta.6
 ```bash
 # global installation
 npm install --global hasura-cli
-# or
+
+# or through yarn
 yarn global add hasura-cli
 ```
 
@@ -74,8 +79,6 @@ Or configure npm scripts on package.json in the way you want.
 ## Support
 
 Generally, it works on 64 bits architecture of any Linux, macOS, and Windows with node@>=8.
-
-As of writing, the "latest" versions are respectively ubuntu-18.04, macOS-10.14 and windows-2019. They are subject to be automatically changed to new versions if available.
 
 ## Development (Contribution)
 
@@ -164,12 +167,13 @@ hasura-cli
 
 package.json exposes the command `hasura` as a symlink to the flie `hasura`.
 
-```json
+```js
 {
   "bin": {
     "hasura": "./hasura"
   },
-  "files": [ // only the directory 'dist' and file 'hasura' are packed as a package.
+  "files": [
+    // only the directory 'dist' and file 'hasura' are packed as a package.
     "dist",
     "hasura"
   ]
