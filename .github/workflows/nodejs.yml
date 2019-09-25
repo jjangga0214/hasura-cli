@@ -37,7 +37,7 @@ jobs:
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           npm install --global pm2 shx verdaccio
 
-      - name: Use Node.js 10.x
+      - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be 
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
@@ -58,16 +58,6 @@ jobs:
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
           shx mkdir ../hasura-cli-user
-      
-      - name: Change Directory To ..\hasura-cli-user On Windows
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          cd ..\hasura-cli-user
-      
-      - name: Change Directory To ../hasura-cli-user On Linux Or macOS
-        if: startsWith(matrix.os, 'windows') == false 
-        run: |
-          cd ../hasura-cli-user
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -76,8 +66,7 @@ jobs:
           
       - name: Test Installation
         run: |
-          npm init -y
-          npm install hasura-cli --registry http://localhost:4873
-          npx hasura version
+          npm install --global hasura-cli --registry http://localhost:4873
+          hasura version
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
