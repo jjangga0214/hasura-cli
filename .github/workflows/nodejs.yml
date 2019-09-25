@@ -32,15 +32,28 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test Installation
+      - name: Install Dependencies For Installation Test
         run: |
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           npm install --global pm2 shx verdaccio
-          shx pm2 start `which verdaccio` --config ./verdaccio/config.yaml
+
+      - name: Run pm2 On Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          pm2 start (where verdaccio) --config ./verdaccio/config.yaml
+
+      - name: Run pm2 On Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false
+        run: |
+          pm2 start `which verdaccio` --config ./verdaccio/config.yaml
+
+      - name: Test Installation
+        run: |
+          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
-          shx mkdir -p ../client
-          cd ../client
+          shx mkdir /hasura-cli-user
+          shx cd /hasura-cli-user
           npm init -y
           npm install hasura-cli
           npx hasura version
