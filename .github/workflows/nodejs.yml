@@ -8,29 +8,29 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12]
-        os: [windows-latest]
+        node-version: [8, 9, 10, 11, 12]
+        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
 
     steps:
-      # - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      # - name: Install Dependencies
-      #   run: yarn install --ignore-scripts --ignore-engines
-      #   env:
-      #     CI: true
+      - name: Install Dependencies
+        run: yarn install --ignore-scripts --ignore-engines
+        env:
+          CI: true
 
-      # - name: Test And Measure Coverage
-      #   run: |
-      #     yarn test:coverage \
-      #     --ci
+      - name: Test And Measure Coverage
+        run: |
+          yarn test:coverage \
+          --ci
 
-      # - name: Lint
-      #   run: yarn lint
+      - name: Lint
+        run: yarn lint
 
       - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be 
         uses: actions/setup-node@v1
@@ -47,10 +47,10 @@ jobs:
         run: |
           pm2 start "(where verdaccio)" --node-args="--config ./verdaccio/config.yaml"
 
-      # - name: Run pm2 On Linux Or macOS
-      #   if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-      #   run: |
-      #     pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
+      - name: Run pm2 On Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
+        run: |
+          pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
 
       - name: Publish To Local Private NPM Registry
         # waits 10 seconds until verdaccio (probably) becomes ready 
@@ -58,14 +58,14 @@ jobs:
           sleep 10
           npm publish --registry http://localhost:4873
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
           
-      # - name: Test Installation
-      #   run: |
-      #     npm install --global hasura-cli --registry http://localhost:4873
-      #     hasura version
+      - name: Test Installation
+        run: |
+          npm install --global hasura-cli --registry http://localhost:4873
+          hasura version
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
