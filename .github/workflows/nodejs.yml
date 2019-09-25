@@ -32,15 +32,15 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Install Dependencies For Installation Test
-        run: |
-          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-          npm install --global pm2 shx verdaccio
-
       - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be 
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+
+      - name: Install Dependencies For Installation Test
+        run: |
+          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
+          npm install --global pm2 verdaccio
 
       - name: Run pm2 On Windows
         if: startsWith(matrix.os, 'windows')
@@ -57,7 +57,6 @@ jobs:
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
-          shx mkdir ../hasura-cli-user
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
