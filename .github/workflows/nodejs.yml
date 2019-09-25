@@ -52,8 +52,8 @@ jobs:
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
-          shx mkdir /hasura-cli-user
-          shx cd /hasura-cli-user
+          shx mkdir ../hasura-cli-user
+          shx cd ../hasura-cli-user
           npm init -y
           npm install hasura-cli
           npx hasura version
