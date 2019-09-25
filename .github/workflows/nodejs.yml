@@ -38,8 +38,8 @@ jobs:
           node-version: 10.x
 
       - name: Install Dependencies For Installation Test
+        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
-          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           npm install --global pm2 verdaccio
 
       - name: Run pm2 On Windows
@@ -53,9 +53,9 @@ jobs:
       #     pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
 
       - name: Publish To Local Private NPM Registry
+        # waits 10 seconds until verdaccio (probably) becomes ready 
         run: |
-          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-          sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
+          sleep 10
           npm publish --registry http://localhost:4873
 
       # - name: Use Node.js ${{ matrix.node-version }}
