@@ -32,6 +32,13 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Build
-        run: yarn build
-# TODO: publish (as a job depending on 'build' job. Check git version tag(e.g. v1.0.0-beta.7))
+      - name: Test Installation
+        run: |
+          # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
+          docker-compose --project-name verdaccio --file ./verdaccio/docker-compose.yml up -d
+          sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
+          npm publish --registry http://localhost:4873
+          yarn install hasura-cli
+          npx hasura version
+
+# TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
