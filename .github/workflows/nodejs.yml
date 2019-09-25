@@ -47,15 +47,27 @@ jobs:
         run: |
           pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
 
-      - name: Test Installation
+      - name: Publish To Local Private NPM Registry
         run: |
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
           shx mkdir ../hasura-cli-user
+      
+      - name: Change Directory To ..\hasura-cli-user On Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          cd ..\hasura-cli-user
+      
+      - name: Change Directory To ../hasura-cli-user On Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false 
+        run: |
           cd ../hasura-cli-user
+          
+      - name: Test Installation
+        run: |
           npm init -y
-          npm install hasura-cli
+          npm install hasura-cli --registry http://localhost:4873
           npx hasura version
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
