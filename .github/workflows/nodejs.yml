@@ -40,12 +40,12 @@ jobs:
       - name: Run pm2 On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
-          pm2 start (where verdaccio) --config ./verdaccio/config.yaml
+          pm2 start (where verdaccio) -- --config ./verdaccio/config.yaml
 
       - name: Run pm2 On Linux Or macOS
-        if: startsWith(matrix.os, 'windows') == false
+        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         run: |
-          pm2 start `which verdaccio` --config ./verdaccio/config.yaml
+          pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
 
       - name: Test Installation
         run: |
