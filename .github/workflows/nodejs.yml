@@ -35,10 +35,14 @@ jobs:
       - name: Test Installation
         run: |
           # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-          docker-compose --project-name verdaccio --file ./verdaccio/docker-compose.yml up -d
+          npm install --global pm2 shx verdaccio
+          shx pm2 start `which verdaccio` --config ./verdaccio/config.yaml
           sleep 10 # waits 10 seconds until verdaccio (probably) becomes ready 
           npm publish --registry http://localhost:4873
-          yarn install hasura-cli
+          shx mkdir -p ../client
+          cd ../client
+          npm init -y
+          npm install hasura-cli
           npx hasura version
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
