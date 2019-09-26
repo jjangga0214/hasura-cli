@@ -32,28 +32,27 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be 
+      - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be high
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
 
-      - name: Install Dependencies For Installation Test
+      - name: Install verdaccio (Local Npm Registry) globally
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-        run: |
-          npm install --global pm2 verdaccio
+        run: npm install --global verdaccio
 
-      - name: Run pm2 On Windows
+      - name: Run Local Npm Registry On Windows
         if: startsWith(matrix.os, 'windows')
-        run: |
-          pm2 start "(where verdaccio)" --node-args="--config ./verdaccio/config.yaml"
+        # `start /b` detaches process from foreground
+        run: start /b verdaccio --config ./verdaccio/config.yaml
 
-      - name: Run pm2 On Linux Or macOS
+      - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-        run: |
-          pm2 start `which verdaccio` -- --config ./verdaccio/config.yaml
+        # trailing `&` detaches process from foreground
+        run: verdaccio --config ./verdaccio/config.yaml &
 
-      - name: Publish To Local Private NPM Registry
-        # waits 10 seconds until verdaccio (probably) becomes ready 
+      - name: Publish To Local NPM Registry
+        # waits 10 seconds until verdaccio (probably) becomes ready
         run: |
           sleep 10
           npm publish --registry http://localhost:4873
@@ -62,7 +61,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          
+
       - name: Test Installation
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
