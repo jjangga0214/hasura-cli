@@ -44,18 +44,20 @@ jobs:
       - name: Run Local Npm Registry On Windows
         if: startsWith(matrix.os, 'windows')
         # `start /b` detaches process from foreground
-        run: start /b verdaccio --config ./verdaccio/config.yaml
+        run: |
+          start /b verdaccio --config ./verdaccio/config.yaml
+          timeout 10
 
       - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         # trailing `&` detaches process from foreground
-        run: verdaccio --config ./verdaccio/config.yaml &
+        run: |
+          verdaccio --config ./verdaccio/config.yaml &
+          sleep 10
 
       - name: Publish To Local NPM Registry
         # waits 10 seconds until verdaccio (probably) becomes ready
-        run: |
-          sleep 10
-          npm publish --registry http://localhost:4873
+        run: npm publish --registry http://localhost:4873
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
