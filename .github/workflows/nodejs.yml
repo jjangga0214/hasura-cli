@@ -46,7 +46,6 @@ jobs:
         # `start /b` detaches process from foreground
         run: |
           start /b verdaccio --config ./verdaccio/config.yaml
-          timeout 10
 
       - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
