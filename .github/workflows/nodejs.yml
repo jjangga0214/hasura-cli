@@ -41,7 +41,7 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
-          docker-compose --project-name verdaccio --file ./verdaccio/docker-compose.yml up -d
+          docker-compose --project-name verdaccio --file verdaccio/docker-compose.yml up -d
 
       - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
