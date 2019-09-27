@@ -37,21 +37,18 @@ jobs:
         with:
           node-version: 10.x
 
-      - name: Install verdaccio (Local Npm Registry) globally
-        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-        run: npm install --global verdaccio
-
       - name: Run Local Npm Registry On Windows
         if: startsWith(matrix.os, 'windows')
-        # `start /b` detaches process from foreground
+        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
-          start /b verdaccio --config ./verdaccio/config.yaml
+          docker-compose --project-name verdaccio --file ./verdaccio/docker-compose.yml up -d
 
       - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         # trailing `&` detaches process from foreground
         run: |
-          verdaccio --config ./verdaccio/config.yaml &
+          npm install --global verdaccio
+          verdaccio --config ./verdaccio/conf/default.yaml &
           sleep 10
 
       - name: Publish To Local NPM Registry
@@ -67,5 +64,6 @@ jobs:
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version
+          npm uninstall --global hasura-cli
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
