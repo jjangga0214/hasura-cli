@@ -1,8 +1,4 @@
-<!-- markdownlint-disable first-line-heading -->
-
-![hasura-cli](./docs/assets/hasura-cli.svg)
-
-<!-- markdownlint-enable first-line-heading -->
+# ![hasura-cli](./docs/assets/hasura-cli.svg)
 
 An npm package that automatically installs and wraps **Hasura CLI** binary in isolated manner
 
