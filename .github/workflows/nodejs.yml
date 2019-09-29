@@ -67,6 +67,8 @@ jobs:
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version
           npm uninstall --global hasura-cli
-          yarn remove verdaccio --ignore-scripts
 
+      - name: Remove Verdaccio On Windows
+        if: startsWith(matrix.os, 'windows')
+        run: yarn remove verdaccio --ignore-scripts
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
