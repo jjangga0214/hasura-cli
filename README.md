@@ -165,7 +165,7 @@ hasura-cli
     └── install.ts
 ```
 
-package.json exposes the command `hasura` as a symlink to the flie `hasura`. Only the directory 'dist' and file 'hasura' are packed as a package.
+package.json exposes the command `hasura` as a symlink to the flie `hasura`. Only the directory `dist` and file `hasura` are packed as a package.
 
 ```json
 {
@@ -181,7 +181,7 @@ package.json exposes the command `hasura` as a symlink to the flie `hasura`. Onl
 
 However, when publishing (`npm publish` on development environment) the package, the file `hasura` is just a dummy 'text' file, not a binary flie. The file will be replaced to a binary only when a client installs the package. `postinstall` lifecycle hook executes `dist/index.js`, which would install the platform-specfic binary.
 
-[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on github as release assets. `src/asset.ts` exposes functions of **getting github asset url** and **downloading the asset from the url**. `src/install.ts` exposes a function of composing them and handling how installation should be processed. `src/index.ts` uses the function to actually install the asset with some additional control.
+[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on github as release assets. `src/asset.ts` exposes functions of _"getting github asset url"_ and _"downloading the asset from the url"_. `src/install.ts` exposes a function of _"composing them and handling how installation should be processed"_. `src/index.ts` uses the function to actually install the asset with some additional control.
 
 ## License
 
