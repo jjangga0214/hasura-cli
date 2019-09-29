@@ -6,7 +6,7 @@ module.exports = {
     es6: true,
     'jest/globals': true,
   },
-  plugins: ['@typescript-eslint', 'prettier', 'jest', 'markdown'],
+  plugins: ['@typescript-eslint', 'prettier', 'jest', 'markdown', 'json'],
   extends: [
     'plugin:jest/all',
     'plugin:import/errors',
