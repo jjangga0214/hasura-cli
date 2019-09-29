@@ -93,7 +93,7 @@ jobs:
       #   if: startsWith(matrix.os, 'windows')
       #   run: yarn remove verdaccio --ignore-scripts --ignore-engines
 
-  publish:
+  build:
     needs: test
     runs-on: ubuntu-latest
 
