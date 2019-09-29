@@ -93,14 +93,6 @@ jobs:
       #   if: startsWith(matrix.os, 'windows')
       #   run: yarn remove verdaccio --ignore-scripts --ignore-engines
 
----
-
-on:
-  push:
-    tag:
-      - 'v1.*' 
-      
-jobs:
   publish:
     needs: test
     runs-on: ubuntu-latest
@@ -112,9 +104,11 @@ jobs:
       with:
         node-version: 10
 
-    - name: Install Dependencies
-       run: |
-         yarn install --ignore-scripts --ignore-engines
-         yarn build
-       env:
-         CI: true
+    - name: Build
+      # only runs if name of branch or git tag starts with 'v1.'
+      if: startsWith(github.ref, 'v1.')
+      run: |
+        yarn install --ignore-scripts --ignore-engines
+        yarn build
+      env:
+        CI: true
