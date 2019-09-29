@@ -35,6 +35,13 @@ jobs:
         with:
           node-version: 10.x
 
+      - name: Run Local Npm Registry (Verdaccio) on Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
+        # trailing `&` detaches process from foreground
+        run: |
+          npm install --global verdaccio
+          verdaccio --config ./verdaccio/conf/default.yaml &
+
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
@@ -42,14 +49,6 @@ jobs:
           call yarn add -D verdaccio --ignore-scripts
           call npm install --global forever
           call forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
-
-      - name: Run Local Npm Registry (Verdaccio) on Linux Or macOS
-        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-        # trailing `&` detaches process from foreground
-        run: |
-          npm install --global verdaccio
-          verdaccio --config ./verdaccio/conf/default.yaml &
-          sleep 10
 
       - name: Publish To Local NPM Registry
         # waits 10 seconds until verdaccio (probably) becomes ready
@@ -60,13 +59,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Test Installation
+      - name: Test Installation on Linux Or macOS
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version
           npm uninstall --global hasura-cli
 
+      - name: Test Installation on Windows
+        run: |
+          call npm install --global hasura-cli --registry http://localhost:4873
+          call hasura version
+          call npm uninstall --global hasura-cli
+
       - name: Remove Verdaccio On Windows
         if: startsWith(matrix.os, 'windows')
-        run: yarn remove verdaccio --ignore-scripts
+        run: yarn remove verdaccio --ignore-scripts --ignore-engines
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
