@@ -8,35 +8,34 @@ jobs:
 
     strategy:
       matrix:
-        # node-version: [8, 9, 10, 11, 12]
-        # os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
-        os: [windows-latest, windows-2016]
+        node-version: [8, 9, 10, 11, 12]
+        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
 
     steps:
       - uses: actions/checkout@v1
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      # - name: Install Dependencies
-      #   run: yarn install --ignore-scripts --ignore-engines
-      #   env:
-      #     CI: true
+      - name: Install Dependencies
+        run: yarn install --ignore-scripts --ignore-engines
+        env:
+          CI: true
 
-      # - name: Test And Measure Coverage
-      #   run: yarn test:coverage --ci
+      - name: Test And Measure Coverage
+        run: yarn test:coverage --ci
 
-      # - name: Lint
-      #   run: yarn lint
+      - name: Lint
+        run: yarn lint
 
       - name: Use Node.js 10.x # for unauthenticated publish, npm version shold be high
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
 
-      - name: Run Local Npm Registry On Windows
+      - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
@@ -44,28 +43,28 @@ jobs:
           call npm install --global forever
           call forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
-      # - name: Run Local Npm Registry on Linux Or macOS
-      #   if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-      #   # trailing `&` detaches process from foreground
-      #   run: |
-      #     npm install --global verdaccio
-      #     verdaccio --config ./verdaccio/conf/default.yaml &
-      #     sleep 10
+      - name: Run Local Npm Registry (Verdaccio) on Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
+        # trailing `&` detaches process from foreground
+        run: |
+          npm install --global verdaccio
+          verdaccio --config ./verdaccio/conf/default.yaml &
+          sleep 10
 
-      # - name: Publish To Local NPM Registry
-      #   # waits 10 seconds until verdaccio (probably) becomes ready
-      #   run: npm publish --registry http://localhost:4873
+      - name: Publish To Local NPM Registry
+        # waits 10 seconds until verdaccio (probably) becomes ready
+        run: npm publish --registry http://localhost:4873
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      # - name: Test Installation
-      #   run: |
-      #     npm install --global hasura-cli --registry http://localhost:4873
-      #     hasura version
-      #     npm uninstall --global hasura-cli
+      - name: Test Installation
+        run: |
+          npm install --global hasura-cli --registry http://localhost:4873
+          hasura version
+          npm uninstall --global hasura-cli
 
       - name: Remove Verdaccio On Windows
         if: startsWith(matrix.os, 'windows')
