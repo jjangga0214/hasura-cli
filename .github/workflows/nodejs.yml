@@ -1,9 +1,25 @@
 name: Node CI
 
-on: [push]
+on: [push] 
 
 jobs:
-  build:
+  # [original source of job "prepare"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
+  prepare:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check condition
+        if: "! ( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') )"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${{ github.event.head_commit.message }}"
+          echo "$GITHUB_CONTEXT"
+      - name: Show Event
+        run: cat ${GITHUB_EVENT_PATH}
+
+  test:
+    needs: prepare
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -73,7 +89,32 @@ jobs:
           call hasura version
           call npm uninstall --global hasura-cli
 
-      - name: Remove Verdaccio On Windows
-        if: startsWith(matrix.os, 'windows')
-        run: yarn remove verdaccio --ignore-scripts --ignore-engines
-# TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
+      # - name: Remove Verdaccio On Windows
+      #   if: startsWith(matrix.os, 'windows')
+      #   run: yarn remove verdaccio --ignore-scripts --ignore-engines
+
+---
+
+on:
+  push:
+    tag:
+      - 'v1.*' 
+      
+jobs:
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js 10
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10
+
+    - name: Install Dependencies
+       run: |
+         yarn install --ignore-scripts --ignore-engines
+         yarn build
+       env:
+         CI: true
