@@ -1,4 +1,4 @@
 {
-  "disable": ["js", "ts"],
+  "disable": ["js", "ts", "md"],
   "md_severity": "failure"
 }
