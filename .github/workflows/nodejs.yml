@@ -89,23 +89,26 @@ jobs:
       #   if: startsWith(matrix.os, 'windows')
       #   run: yarn remove verdaccio --ignore-scripts --ignore-engines
 
-  build:
+  publish:
     needs: test
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
 
-      - name: Use Node.js 10
+      - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
 
       - name: Build
-        # only runs if name of branch or git tag starts with 'v1.'
+        # only runs if name of git tag starts with 'v1.'
         if: startsWith(github.ref, 'refs/tags/v1.')
         run: |
           yarn install --ignore-scripts --ignore-engines
           yarn build
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish
         env:
           CI: true
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
