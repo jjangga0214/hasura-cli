@@ -165,15 +165,14 @@ hasura-cli
     └── install.ts
 ```
 
-package.json exposes the command `hasura` as a symlink to the flie `hasura`.
+package.json exposes the command `hasura` as a symlink to the flie `hasura`. Only the directory 'dist' and file 'hasura' are packed as a package.
 
-```js
+```json
 {
   "bin": {
     "hasura": "./hasura"
   },
   "files": [
-    // only the directory 'dist' and file 'hasura' are packed as a package.
     "dist",
     "hasura"
   ]
