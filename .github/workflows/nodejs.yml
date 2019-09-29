@@ -60,12 +60,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Test Installation on Linux Or macOS
+        if: startsWith(matrix.os, 'windows') == false
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version
           npm uninstall --global hasura-cli
 
       - name: Test Installation on Windows
+        if: startsWith(matrix.os, 'windows')
         run: |
           call npm install --global hasura-cli --registry http://localhost:4873
           call hasura version
