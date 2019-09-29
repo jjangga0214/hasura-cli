@@ -41,7 +41,9 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
-          docker-compose --project-name verdaccio --file verdaccio\docker-compose.yml up -d
+          yarn add -D verdaccio --ignore-scripts
+          npm install --global forever
+          forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
       - name: Run Local Npm Registry on Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
@@ -65,5 +67,6 @@ jobs:
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version
           npm uninstall --global hasura-cli
+          yarn remove verdaccio --ignore-scripts
 
 # TODO: publish (Check git version tag(e.g. v1.0.0-beta.7))
