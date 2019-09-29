@@ -35,6 +35,7 @@ module.exports = {
     'consistent-return': 'off',
     'no-shadow': 'off',
     'no-unused-vars': 'off',
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     '@typescript-eslint/member-delimiter-style': 'off',
   },
   settings: {
