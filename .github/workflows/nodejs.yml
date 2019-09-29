@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Check [ci skip] or [skip ci]
-        if: contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]')
+        if: "( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') && !startsWith(github.ref, 'v1.')"
         run: |
           cat ${GITHUB_EVENT_PATH}
           exit 3
