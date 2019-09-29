@@ -49,6 +49,9 @@
     ],
     "*.md": [
       "yarn lint:md"
+    ],
+    "*.json": [
+      "yarn lint:code"
     ]
   },
   "devDependencies": {
