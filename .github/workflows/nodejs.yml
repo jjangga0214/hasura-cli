@@ -8,15 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check condition
-        if: "! ( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') )"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: Show Event And Exit If Condition Meets
+        if: contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]')
         run: |
-          echo "${{ github.event.head_commit.message }}"
-          echo "$GITHUB_CONTEXT"
-      - name: Show Event
-        run: cat ${GITHUB_EVENT_PATH}
+          cat ${GITHUB_EVENT_PATH}
+          exit 3
 
   test:
     needs: prepare
