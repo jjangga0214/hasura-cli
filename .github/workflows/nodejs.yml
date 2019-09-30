@@ -87,10 +87,6 @@ jobs:
           call hasura version
           call npm uninstall --global hasura-cli
 
-      # - name: Remove Verdaccio On Windows
-      #   if: startsWith(matrix.os, 'windows')
-      #   run: yarn remove verdaccio --ignore-scripts --ignore-engines
-
   publish:
     needs: test
     runs-on: ubuntu-latest
