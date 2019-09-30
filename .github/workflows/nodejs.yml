@@ -18,20 +18,15 @@ jobs:
 
   test:
     needs: prepare
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        node-version: [8, 9, 10, 11, 12]
-        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 12
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
 
       - name: Install Dependencies
         run: yarn install --ignore-scripts --ignore-engines
@@ -49,23 +44,52 @@ jobs:
         with:
           node-version: 12
 
+  e2etest:
+    needs: test
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [8, 9, 10, 11, 12]
+        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        # only installs packages needed to publish to save time
+        run: | 
+          yarn add --ignore-scripts --ignore-engines -D typescript shx
+          yarn add --ignore-scripts --ignore-engines axois chalk
+        env:
+          CI: true
+
+      - name: Use Node.js 12 # for unauthenticated publish, npm version should be high enough
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
       - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
+        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-        # trailing `&` detaches process from foreground
         run: |
           npm install --global verdaccio
+          # trailing `&` detaches process from foreground
           verdaccio --config ./verdaccio/conf/default.yaml &
 
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
-        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: |
           call yarn add -D verdaccio --ignore-scripts
           call npm install --global forever
           call forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
       - name: Publish To Local NPM Registry
-        # waits 10 seconds until verdaccio (probably) becomes ready
         run: npm publish --registry http://localhost:4873
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -88,7 +112,7 @@ jobs:
           call npm uninstall --global hasura-cli
 
   publish:
-    needs: test
+    needs: e2etest
     runs-on: ubuntu-latest
 
     steps:
@@ -100,8 +124,8 @@ jobs:
           node-version: 12
 
       - name: Build And Publish To Npm
-        # only runs if name of git tag starts with 'v1.'
-        if: startsWith(github.ref, 'refs/tags/v1.')
+        # only runs if name of git tag starts with 'v1.' and on branch master
+        if: startsWith(github.ref, 'refs/tags/v1.') && ( github.event.base_ref == 'refs/heads/master' )
         run: |
           yarn install --ignore-scripts --ignore-engines
           yarn build
@@ -112,6 +136,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Notify Slack
+        if: startsWith(github.ref, 'refs/tags/v1.') && ( github.event.base_ref == 'refs/heads/master' )
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: pullreminders/slack-action@master
