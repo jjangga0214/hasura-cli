@@ -120,4 +120,4 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: pullreminders/slack-action@master
         with:
-          args: '{\"channel\":\"C5KTCLYG7\",\"text\":\"Package is published to NPM.\"}'
+          args: '{\"channel\":\"C5KTCLYG7\",\"text\":\"hasura-cli is published to NPM.\"}'
