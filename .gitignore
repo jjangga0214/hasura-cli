@@ -6,7 +6,6 @@ hasura.dev
 tsconfig.tsbuildinfo
 verdaccio/**/*
 !verdaccio/conf/default.yaml
-!verdaccio/conf/docker.yaml
 # Created by https://www.gitignore.io/api/node,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,intellij+all,visualstudiocode
 
