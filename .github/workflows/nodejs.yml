@@ -39,11 +39,6 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Use Node.js 12 # for unauthenticated publish, npm version should be high enough
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-
   e2etest:
     needs: test
     runs-on: ${{ matrix.os }}
