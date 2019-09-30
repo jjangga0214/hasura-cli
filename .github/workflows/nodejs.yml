@@ -44,10 +44,10 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Use Node.js 10 # for unauthenticated publish, npm version shold be high
+      - name: Use Node.js 12 # for unauthenticated publish, npm version should be high enough
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
 
       - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
