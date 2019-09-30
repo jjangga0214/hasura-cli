@@ -96,14 +96,14 @@ jobs:
         if: startsWith(matrix.os, 'windows') == false
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
-          hasura version
+          hasura version --skip-update-check
           npm uninstall --global hasura-cli
 
       - name: Test Installation On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
           call npm install --global hasura-cli --registry http://localhost:4873
-          call hasura version
+          call hasura version --skip-update-check
           call npm uninstall --global hasura-cli
 
   publish:
