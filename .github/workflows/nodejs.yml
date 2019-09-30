@@ -12,6 +12,7 @@ jobs:
         run: cat ${GITHUB_EVENT_PATH}
 
       - name: Check [ci skip] or [skip ci]
+        # skip commits with [ci skip] or [skip ci], except on an action triggered by push of a version tag 
         if: "( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') ) && !startsWith(github.ref, 'refs/tags/v1.')"
         run: |
           exit 3
@@ -60,7 +61,6 @@ jobs:
         # only installs packages needed to publish to save time
         run: | 
           yarn add --ignore-scripts --ignore-engines -D typescript shx
-          yarn add --ignore-scripts --ignore-engines axois chalk
         env:
           CI: true
 
@@ -122,8 +122,9 @@ jobs:
         # only runs if name of git tag starts with 'v1.' and on branch master
         if: startsWith(github.ref, 'refs/tags/v1.') && ( github.event.base_ref == 'refs/heads/master' )
         run: |
-          yarn install --ignore-scripts --ignore-engines
-          yarn build
+          # only installs packages needed to publish to save time
+          yarn add --ignore-scripts --ignore-engines -D typescript shx
+          yarn build # to prevent a mistake thougth there is already prepublishOnly lifecycle hook.
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm publish
         env:
