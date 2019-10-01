@@ -65,9 +65,9 @@ Or configure npm scripts on package.json in the way you want.
 {
   "scripts": {
     "hasura:_": "hasura --project hasura --endpoint $HASURA_ENDPOINT",
-    "hasura:console": "npm hasura:_ console",
-    "hasura:pull": "npm hasura:_ migrate create --from-server",
-    "hasura:push": "npm hasura:_ migrate apply"
+    "hasura:console": "npm run hasura:_ console",
+    "hasura:pull": "npm run hasura:_ migrate create --from-server",
+    "hasura:push": "npm run hasura:_ migrate apply"
   }
 }
 ```
@@ -124,9 +124,9 @@ yarn dev:no-respawn
 yarn dev:build
 ```
 
-`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to the file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting, while [tsconfig-paths](https://github.com/dividab/tsconfig-paths) loads modules at runtime by respecting `baseUrl` and `paths` field on tsconfig.json.
+`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to the file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting.
 
-`yarn dev:no-rewpawn` does the same thing except it does not restart.
+`yarn dev:no-respawn` does the same thing except it does not restart.
 
 `yarn dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and run (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simualtaneously.
 
@@ -177,7 +177,7 @@ package.json exposes the command `hasura` as a symlink to the flie `hasura`. Onl
 
 However, when publishing (`npm publish` on development environment) the package, the file `hasura` is just a dummy 'text' file, not a binary flie. The file will be replaced to a binary only when a client installs the package. On windows, unlike linux and macOS, the file `hasura` is not to be replaced, but just a new file `hasura.exe` will be created. `postinstall` lifecycle hook executes `dist/index.js`, which would install the platform-specfic binary.
 
-[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on github as release assets. `src/asset.ts` exposes functions of _"getting github asset url"_ and _"downloading the asset from the url"_. `src/install.ts` exposes a function of _"composing them and handling how installation should be processed"_. `src/index.ts` uses the function to actually install the asset with some additional control.
+[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on GitHub as release assets. `src/asset.ts` exposes functions of _"getting GitHub asset url"_ and _"downloading the asset from the url"_. `src/install.ts` exposes a function of _"composing them and handling how installation should be processed"_. `src/index.ts` uses the function to actually install the asset with some additional control.
 
 ## License
 
