@@ -5,6 +5,11 @@ uplinks:
     url: https://registry.npmjs.org/
 
 packages:
+  'hasura-cli':
+     access: $all
+     publish: $all
+     # no proxy to override possibly existing version on npm. [ref](https://verdaccio.org/docs/en/best#override-public-packages)
+
   '@*/*':
     access: $all
     publish: $all
