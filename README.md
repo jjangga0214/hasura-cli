@@ -100,7 +100,7 @@ Whether `src/index.ts` would install the cli. You can set it `false` to prevent 
 
 #### `HASURA_CLI_DEST_DIR` (string)
 
-A directory under which Hasura CLI should be installed.
+A directory where Hasura CLI should be installed.
 
 #### `HASURA_CLI_DEST_FILENAME` (string)
 
