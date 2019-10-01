@@ -76,14 +76,12 @@ jobs:
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         run: |
-          npm install --global verdaccio
           # trailing `&` detaches process from foreground
-          verdaccio --config ./verdaccio/conf/default.yaml &
+          yarn verdaccio &
 
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
-          call yarn add -D verdaccio --ignore-scripts
           call npm install --global forever
           call forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
