@@ -14,17 +14,17 @@ An npm package that automatically installs and wraps **Hasura CLI** binary in is
 
 ## Why?
 
-The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli), which is not this package, is a compiled binary originally written in go. But just installing it on your system would cause some problems.
+The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli), which is not this package, is a compiled binary originally written in go. But just installing it on your system could cause some problems.
 
 1. Difficult to use different hasura versions on multiple projects.
 2. Inconvenient to ensure every colleagues having same version installed.
-3. Manual installation.
+3. Manual installation not specified as npm devDependency.
 
 **hasura-cli** solves them. It automatically downloads the CLI and exposes the command `hasura`. Downloaded CLI would be isolated, making it only dedicated to the "project" that installed it. Of course, you can install it as global package as well.
 
 ## Installation
 
-You can just simply instrall hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
+You can just simply install hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
 ```bash
 # latest version
@@ -108,7 +108,7 @@ A file name of Hasura CLI.
 
 ### Getting started
 
-Install dependencies. Lifecycle script `postinstall` is only for clients who wants to install the binary. So, ignore it with `--ignore-scripts` option. It should also be used on CI.
+Install dependencies. Lifecycle script `postinstall` is only for clients who want to install the binary. So, ignore it with `--ignore-scripts` option. It should also be used on CI.
 
 ```bash
 yarn install --ignore-scripts
@@ -168,10 +168,7 @@ package.json exposes the command `hasura` as a symlink to the flie `hasura`. Onl
   "bin": {
     "hasura": "./hasura"
   },
-  "files": [
-    "dist",
-    "hasura"
-  ]
+  "files": ["dist", "hasura"]
 }
 ```
 
