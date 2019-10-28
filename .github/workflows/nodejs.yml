@@ -16,8 +16,6 @@ jobs:
         if: "( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') ) && !startsWith(github.ref, 'refs/tags/v1.')"
         run: |
           # 78 is conventional "neutral exit code"
-          # However, github action currently only distinguishes 0 and non-zero exit code.
-          # But it seems Github would support neutral exit code.
           exit 78
 
   test:
@@ -82,8 +80,8 @@ jobs:
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
-          call npm install --global forever
-          call forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
+          npm install --global forever
+          forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
       - name: Publish To Local NPM Registry
         run: npm publish --registry http://localhost:4873
@@ -93,19 +91,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Test Installation On Linux Or macOS
-        if: startsWith(matrix.os, 'windows') == false
+      - name: Test Installation
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version --skip-update-check
           npm uninstall --global hasura-cli
-
-      - name: Test Installation On Windows
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          call npm install --global hasura-cli --registry http://localhost:4873
-          call hasura version --skip-update-check
-          call npm uninstall --global hasura-cli
 
   publish:
     needs: e2etest
