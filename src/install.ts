@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 import chalk from 'chalk'
 import { getUrl, download } from './asset'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -21,7 +22,7 @@ interface InstallOptions {
 }
 
 export const defaultInstallOptions = {
-  destDir: process.env.HASURA_CLI_DEST_DIR || '.',
+  destDir: process.env.HASURA_CLI_DEST_DIR || '.', // default to project root
   fileName: process.env.HASURA_CLI_DEST_FILENAME || 'hasura',
   dest(): string {
     return path.resolve(this.destDir, this.fileName)
@@ -59,7 +60,9 @@ export async function install({
     destDir,
     fileName: adjustedFileName,
   })
-
+  if (platform === 'win32') {
+    fs.unlinkSync(path.resolve(destDir, 'hasura'))
+  }
   log(
     chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
