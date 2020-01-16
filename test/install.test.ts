@@ -22,6 +22,14 @@ describe('install', () => {
       }
     }
     const destDir = path.resolve(__dirname, 'tmp')
+    // eslint-disable-next-line jest/no-if
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir)
+    }
+    // eslint-disable-next-line jest/no-if
+    if (process.platform === 'win32') {
+      fs.closeSync(fs.openSync(path.resolve(destDir, 'hasura'), 'w'))
+    }
     const dest = await install({
       destDir,
       fileName: `${Date.now()}-${version}`,
