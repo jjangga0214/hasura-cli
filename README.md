@@ -50,6 +50,12 @@ npm install --global hasura-cli
 yarn global add hasura-cli
 ```
 
+`beta` tag is also maintained since `v1.1.0-beta.1`.
+
+```bash
+npm install hasura-cli@beta
+```
+
 Then you will be able to run hasura command.
 
 For example,
