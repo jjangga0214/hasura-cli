@@ -65,7 +65,7 @@ export async function install({
   }
   log(
     chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}} 
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPacakgeJson()}}
 {green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
 `,
   )
