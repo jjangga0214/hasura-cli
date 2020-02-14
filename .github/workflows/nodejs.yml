@@ -25,10 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Use Node.js 12
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ steps.nvmrc.outputs.nvmrc }}
 
       - name: Install Dependencies
         run: yarn install --ignore-scripts --ignore-engines
