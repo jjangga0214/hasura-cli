@@ -60,8 +60,7 @@ jobs:
 
       - name: Install Dependencies
         # only installs packages needed to publish to save time
-        run: |
-          yarn add --ignore-scripts --ignore-engines -D typescript shx
+        run: yarn add --ignore-scripts --ignore-engines -D typescript shx
         env:
           CI: true
 
@@ -95,7 +94,10 @@ jobs:
         run: |
           npm install --global hasura-cli --registry http://localhost:4873
           hasura version --skip-update-check
-          npm uninstall --global hasura-cli
+
+      - name: Test Uninstallation
+        if: startsWith(matrix.os, 'windows') == false
+        run: npm uninstall --global hasura-cli
 
   publish:
     needs: e2etest
