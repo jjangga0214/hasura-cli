@@ -1,0 +1,135 @@
+name: Test and Conditionally Publish
+
+on: [push]
+
+jobs:
+  # [original source of job "prepare"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
+  prepare:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Print GITHUB_EVENT_PATH'
+        run: cat ${GITHUB_EVENT_PATH}
+
+      - name: Check [ci skip] or [skip ci]
+        # skip commits with [ci skip] or [skip ci], except on an action triggered by push of a version tag
+        if: "( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') ) && !startsWith(github.ref, 'refs/tags/v1.')"
+        run: |
+          # 78 is conventional "neutral exit code"
+          exit 78
+
+  test:
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.nvmrc.outputs.nvmrc }}
+
+      - name: Install Dependencies
+        run: yarn install --ignore-scripts --ignore-engines
+        env:
+          CI: true
+
+      - name: Test And Measure Coverage
+        run: yarn test:coverage --ci
+
+      - name: Lint
+        run: yarn lint
+
+  e2etest:
+    needs: test
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [8, 9, 10, 11, 12]
+        os: [ubuntu-latest, macOS-latest, windows-latest, windows-2016]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        # only installs packages needed to publish to save time
+        run: yarn add --ignore-scripts --ignore-engines -D typescript shx
+        env:
+          CI: true
+
+      - name: Use Node.js 12 # for unauthenticated publish, npm version should be high enough
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
+        # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
+        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
+        run: |
+          # trailing `&` detaches process from foreground
+          yarn verdaccio &
+
+      - name: Run Local Npm Registry (Verdaccio) On Windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          npm install --global forever
+          forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
+
+      - name: Publish To Local NPM Registry
+        run: npm publish --registry http://localhost:4873
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Test Installation
+        run: |
+          npm install --global hasura-cli --registry http://localhost:4873
+          hasura version --skip-update-check
+
+      - name: Test Uninstallation
+        if: startsWith(matrix.os, 'windows') == false
+        run: npm uninstall --global hasura-cli
+
+  publish:
+    needs: e2etest
+    if: startsWith(github.ref, 'refs/tags/v1.') && ( github.event.base_ref == 'refs/heads/master' )
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Build And Publish To Npm
+        # only runs if name of git tag starts with 'v1.' and on branch master
+        run: |
+          # only installs packages needed to publish to save time
+          yarn add --ignore-scripts --ignore-engines -D typescript shx
+          yarn build # to prevent a mistake thougth there is already prepublishOnly lifecycle hook.
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish
+        env:
+          CI: true
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Notify Slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: pullreminders/slack-action@master
+        with:
+          args: '{\"channel\":\"C5KTCLYG7\",\"text\":\"hasura-cli is published to NPM.\"}'
