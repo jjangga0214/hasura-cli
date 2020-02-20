@@ -32,6 +32,6 @@ You can report the issue on {bold ${issueUrl}} with error message.
 } else {
   console.log(chalk`
 {bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson()}}
-{blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_INSTALL} is {bold ${`${HASURA_CLI_INSTALL}`}}, therefore {bold hasura-cli} doesn't do anything. 
+{blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_INSTALL} is {bold ${`${HASURA_CLI_INSTALL}`}}, therefore {bold hasura-cli} doesn't do anything.
   `)
 }
