@@ -26,7 +26,7 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 You can just simply install hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
-Currently there are 2 npm tags (npm tags are different from versions), `latest` and `beta`. `latest` tag refers to Hasura's latest stable version(e.g. v1.1.0 as of writing), while `beta`, beta version(e.g. v1.1.0-beta.3 as of writing).
+Currently there are 2 npm tags (npm tags are different from versions), `latest` and `beta`. `latest` tag refers to Hasura's latest stable version(e.g. v1.1.0 as of writing), while `beta`, beta version(e.g. v1.2.0-beta.1 as of writing).
 
 Of course, you can install it globally,
 
@@ -44,7 +44,7 @@ npm install --save-dev hasura-cli@latest
 npm install --save-dev hasura-cli@beta
 
 # or specific version
-npm install --save-dev hasura-cli@1.0.0
+npm install --save-dev hasura-cli@1.1.0
 
 # latest version regardless of tag
 npm install --save-dev hasura-cli
