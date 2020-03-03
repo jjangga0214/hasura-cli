@@ -17,7 +17,8 @@
     "lint": "yarn lint:code . && yarn lint:md .",
     "format:js": "yarn lint:js --fix",
     "format:ts": "yarn lint:ts --fix",
-    "format": "yarn lint:code . --fix && yarn lint:md .",
+    "format:md": "yarn lint:md --fix",
+    "format": "yarn format:js . && yarn format:ts . && yarn format:md .",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
     "build": "shx rm -rf dist/* && tsc",
@@ -49,7 +50,7 @@
       "git add"
     ],
     "*.md": [
-      "yarn lint:md"
+      "yarn format:md"
     ],
     "*.json": [
       "yarn lint:code"
@@ -80,7 +81,7 @@
     "jest": "^24.8.0",
     "jest-junit": "^7.0.0",
     "lint-staged": ">=8",
-    "markdownlint-cli": "^0.17.0",
+    "markdownlint-cli": "^0.22.0",
     "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
     "shx": "^0.3.2",
