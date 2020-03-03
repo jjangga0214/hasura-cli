@@ -65,7 +65,7 @@ Or configure npm scripts on package.json in the way you want.
 ```json
 {
   "scripts": {
-    "hasura": "hasura --project hasura",
+    "hasura": "hasura --project hasura --skip-update-check",
     "hasura:console": "npm run hasura console",
     "hasura:apply": "npm run hasura migrate apply"
   }
