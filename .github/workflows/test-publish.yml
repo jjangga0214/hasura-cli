@@ -58,7 +58,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
-        run: yarn install --ignore-scripts --ignore-engines
+        run: yarn install --silent --frozen-lockfile --ignore-scripts --ignore-engines
         env:
           CI: true
 
