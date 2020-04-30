@@ -13,6 +13,20 @@ on:
       - '.gitignore'
       - 'commitlint.config.js'
       - 'LICENSE'
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.markdownlint.json'
+      - '.anylint'
+      - '.editorconfig'
+      - '.env.example'
+      - '.gitattributes'
+      - '.gitignore'
+      - 'commitlint.config.js'
+      - 'LICENSE'
 
 jobs:
   # [original source of job "prepare"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)

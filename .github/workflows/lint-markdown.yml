@@ -7,6 +7,14 @@ on:
       - '.markdownlint.json'
       - 'package.json'
       - '.github/workflows/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**.md'
+      - '.markdownlint.json'
+      - 'package.json'
+      - '.github/workflows/**'
 
 jobs:
   # [original source of job "prepare"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
