@@ -2,6 +2,9 @@
 
 An npm package that automatically installs and wraps **Hasura CLI** binary in isolated manner
 
+[![npm version](https://img.shields.io/npm/v/hasura-cli?style=flat-square&labelColor=black&label=version)](https://www.npmjs.com/package/hasura-cli)
+[![npm download](https://img.shields.io/npm/dm/hasura-cli?style=flat-square&labelColor=black&label=npm%20download)](https://www.npmjs.com/package/hasura-cli)
+
 [![license](https://img.shields.io/badge/license-MIT-ff4081.svg?style=flat-square&labelColor=black)](./LICENSE)
 [![test](https://img.shields.io/badge/test-jest-7c4dff.svg?style=flat-square&labelColor=black)](./jest.config.js)
 [![code style:airbnb](https://img.shields.io/badge/code_style-airbnb-448aff.svg?style=flat-square&labelColor=black)](https://github.com/airbnb/javascript)
@@ -26,7 +29,7 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 You can just simply install hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
-Currently there are 2 npm tags (npm tags are different from versions), `latest` and `beta`. `latest` tag refers to Hasura's latest stable version(e.g. v1.2.2 as of writing), while `beta`, beta version(e.g. v1.3.0-beta.4 as of writing).
+Currently there are 2 npm tags (npm tags are different from versions), `latest` and `beta`. `latest` tag refers to Hasura's latest stable version(e.g. v1.3.1 as of writing), while `beta`, beta version(e.g. v1.3.1-beta.1 as of writing).
 
 Of course, you can install it globally,
 
@@ -77,6 +80,19 @@ Or configure npm scripts on package.json in the way you want.
 Generally, it works on 64 bits architecture of any Linux, macOS, and Windows with node@>=8.
 
 ## Development (Contribution)
+
+### Quick PR for new version
+
+It's simple. Just update the `version` in [package.json](./package.json), then make a Pull Request. That's it!
+
+```js
+{
+  "name": "hasura-cli",
+  "version": "1.3.0", // Patch this to "1.3.1-beta.1", for example.
+  "license": "MIT",
+  // ...
+}
+```
 
 ### Note
 
