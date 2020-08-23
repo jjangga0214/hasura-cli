@@ -32,11 +32,11 @@ See `moduleNameMapper` field for corresponding configuration on jest.config.js.
 
 For example,
 
-```json
+```js
 {
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-  "^#/(.*)$": "<rootDir>/src/$1",
+    "^#/(.*)$": "<rootDir>/src/$1",
   }
 }
 ```
@@ -47,7 +47,7 @@ means **#/** will be matched to **src/**.
 
 `eslint-plugin-import` and `eslint-import-resolver-typescript` respect tsconfig.json by the configuration below in .eslintrc.js.
 
-```json
+```js
 {
   settings: {
     "import/resolver": {
