@@ -85,11 +85,11 @@ Generally, it works on 64 bits architecture of any Linux, macOS, and Windows wit
 
 It's simple. Just update the `version` in [package.json](./package.json), then make a Pull Request. That's it!
 
-```js
+```jsonc
 {
   "name": "hasura-cli",
   "version": "1.3.0", // Patch this to "1.3.1-beta.1", for example.
-  "license": "MIT",
+  "license": "MIT"
   // ...
 }
 ```
