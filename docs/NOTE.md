@@ -10,21 +10,27 @@ Some scripts in package.json explicitly call yarn as well.
 
 ### Lock file
 
-Therefore, this project only maintains _yarn.lock_, which yarn generates. Do not commit _package-lock.json_, which npm generates.
+Therefore, this project only maintains _yarn.lock_, which yarn generates. Do not
+commit _package-lock.json_, which npm generates.
 
 ### Version
 
-The version of yarn should satisfy the condition specified on package.json's `engines.yarn` field.
+The version of yarn should satisfy the condition specified on package.json's
+`engines.yarn` field.
 
 ## Module alias
 
-Module alias is only used for tests to load source modules. Every source modules under **src** directory do only use relative paths each other. So, compiled js files doesn't depend on module alias resolution.
+Module alias is only used for tests to load source modules. Every source modules
+under **src** directory do only use relative paths each other. So, compiled js
+files doesn't depend on module alias resolution.
 
-Thus, module aliases should be consistent between configurations of typescript, jest, and eslint.
+Thus, module aliases should be consistent between configurations of typescript,
+jest, and eslint.
 
 ### Typescript
 
-For typescript, corresponding configuration is done by `baseUrl` and `paths` fields in tsconfig.json.
+For typescript, corresponding configuration is done by `baseUrl` and `paths`
+fields in tsconfig.json.
 
 ### Jest
 
@@ -47,7 +53,8 @@ means **#/** will be matched to **src/**.
 
 ### Eslint
 
-`eslint-plugin-import` and `eslint-import-resolver-typescript` respect tsconfig.json by the configuration below in .eslintrc.js.
+`eslint-plugin-import` and `eslint-import-resolver-typescript` respect
+tsconfig.json by the configuration below in .eslintrc.js.
 
 <!-- eslint-skip -->
 
@@ -65,7 +72,9 @@ This makes it not complaining about module aliases.
 
 ### Unconventional symbol
 
-Note that `#` is used instead of more conventional `@` due to [an issue](https://github.com/Rush/link-module-alias/issues/3) of `link-module-alias`.
+Note that `#` is used instead of more conventional `@` due to
+[an issue](https://github.com/Rush/link-module-alias/issues/3) of
+`link-module-alias`.
 
 ## Test
 
@@ -77,16 +86,26 @@ Note that `#` is used instead of more conventional `@` due to [an issue](https:/
 
 ## Git hooks
 
-There are git hooks, you can see them in package.json under `husky` field. To ignore hooks registered by husky, run `HUSKY_SKIP_HOOKS=1 <command-you-want>` or `yarn husky-skip <command-you-want>`. Note that shell specific configuration (e.g. aliases) might be only avaliable with the former one, as `yarn` could use a different shell (e.g. `/bin/sh`) from your default one.
+There are git hooks, you can see them in package.json under `husky` field. To
+ignore hooks registered by husky, run `HUSKY_SKIP_HOOKS=1 <command-you-want>` or
+`yarn husky-skip <command-you-want>`. Note that shell specific configuration
+(e.g. aliases) might be only avaliable with the former one, as `yarn` could use
+a different shell (e.g. `/bin/sh`) from your default one.
 
 ### Lint-staged
 
-[lint-staged](https://github.com/okonet/lint-staged) is used to format staged files, and stage them again (as obviously they become 'changed' after formatted).
+[lint-staged](https://github.com/okonet/lint-staged) is used to format staged
+files, and stage them again (as obviously they become 'changed' after
+formatted).
 
 ### Commitizen
 
-This repo is [**"commitizen-friendly"**](https://github.com/commitizen/cz-cli#if-your-repo-is-commitizen-friendly). Commitizen is executed when `git commit`(`prepare-commit-msg` hook).
+This repo is
+[**"commitizen-friendly"**](https://github.com/commitizen/cz-cli#if-your-repo-is-commitizen-friendly).
+Commitizen is executed when `git commit`(`prepare-commit-msg` hook).
 
 ### Commitlint
 
-[Commitlint](https://github.com/conventional-changelog/commitlint) lints commit message. [commitlint.config.js](../commitlint.config.js) is its configuration file.
+[Commitlint](https://github.com/conventional-changelog/commitlint) lints commit
+message. [commitlint.config.js](../commitlint.config.js) is its configuration
+file.
