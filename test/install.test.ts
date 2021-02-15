@@ -1,7 +1,7 @@
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
-import { install } from '#/install'
+import { install } from '../src/install'
 
 const exec = util.promisify(require('child_process').exec)
 
