@@ -2,12 +2,8 @@ import path from 'path'
 import fs from 'fs'
 import chalk from 'chalk'
 import { getUrl, download } from './asset'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { version } = require('../package.json')
-
-export function versionFromPackageJson(): string {
-  return version
-}
+// eslint-disable-next-line global-require,@typescript-eslint/no-var-requires
+export const { version: versionFromPackageJson } = require('../package.json')
 
 export function tagFromVersion(version: string): string {
   return `v${version}`
@@ -21,18 +17,10 @@ interface InstallOptions {
   verbose?: boolean
 }
 
-export const defaultInstallOptions = {
-  destDir: process.env.HASURA_CLI_DEST_DIR || '.', // default to project root
-  fileName: process.env.HASURA_CLI_DEST_FILENAME || 'hasura',
-  dest(): string {
-    return path.resolve(this.destDir, this.fileName)
-  },
-}
-
 export async function install({
-  version = versionFromPackageJson(),
-  destDir = defaultInstallOptions.destDir,
-  fileName = defaultInstallOptions.fileName,
+  version = versionFromPackageJson,
+  destDir = process.env.HASURA_CLI_DEST_DIR || '.', // default to project root,
+  fileName = process.env.HASURA_CLI_DEST_FILENAME || 'hasura',
   platform = process.platform,
   verbose = false,
 }: InstallOptions = {}): Promise<string> {
@@ -46,7 +34,7 @@ export async function install({
 
   log(
     chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson()}}
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson}}
 {blue Downloading} {bold Hasura CLI binary} {green ${tag}} from {bold ${url}}
 `,
   )
@@ -65,7 +53,7 @@ export async function install({
   }
   log(
     chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson()}}
+{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson}}
 {green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
 `,
   )

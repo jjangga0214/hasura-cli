@@ -19,9 +19,7 @@ export async function download({
   const dest = path.resolve(destDir, fileName)
   const writer = fs.createWriteStream(dest)
 
-  const res = await axios({
-    url,
-    method: 'GET',
+  const res = await axios.get(url, {
     responseType: 'stream',
     headers: {
       Accept: 'application/octet-stream',
