@@ -3,6 +3,8 @@
 An npm package that automatically installs and wraps **Hasura CLI** binary in isolated manner
 
 [![npm version](https://img.shields.io/npm/v/hasura-cli?style=flat-square&labelColor=black&label=version)](https://www.npmjs.com/package/hasura-cli)
+[![npm beta version](https://img.shields.io/npm/v/hasura-cli/beta?style=flat-square&labelColor=black&color=ffd900&label=beta)](https://www.npmjs.com/package/hasura-cli)
+[![npm alpha version](https://img.shields.io/npm/v/hasura-cli/alpha?style=flat-square&labelColor=black&color=fedcba&&label=alpha)](https://www.npmjs.com/package/hasura-cli)
 [![npm download](https://img.shields.io/npm/dm/hasura-cli?style=flat-square&labelColor=black&label=npm%20download)](https://www.npmjs.com/package/hasura-cli)
 
 [![license](https://img.shields.io/badge/license-MIT-ff4081.svg?style=flat-square&labelColor=black)](./LICENSE)
@@ -29,7 +31,7 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 You can just simply install hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
-Currently there are 3 npm tags (npm tags are different from versions), `latest`, `beta` and `alpha`. `latest` tag refers to Hasura's latest stable version(e.g. v1.3.3 as of writing), while `beta` and `alpha`, respectively beta version(e.g. v1.3.4-beta.3 as of writing) and alpha version(e.g. v2.0.0-alpha.5 as of writing).
+Currently there are 3 npm tags (npm tags are different from versions), `latest`, `beta` and `alpha`. `latest` tag refers to Hasura's latest stable version(e.g. [![npm version](https://img.shields.io/npm/v/hasura-cli?style=flat-square&labelColor=black&label=version)](https://www.npmjs.com/package/hasura-cli)), while `beta` and `alpha`, respectively beta version(e.g. [![npm beta version](https://img.shields.io/npm/v/hasura-cli/beta?style=flat-square&labelColor=black&color=ffd900&label=beta)](https://www.npmjs.com/package/hasura-cli)) and alpha version(e.g. [![npm alpha version](https://img.shields.io/npm/v/hasura-cli/alpha?style=flat-square&labelColor=black&color=fedcba&&label=alpha)](https://www.npmjs.com/package/hasura-cli)).
 
 Of course, you can install it globally,
 
