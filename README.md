@@ -40,17 +40,17 @@ npm install --global hasura-cli[@tag|@version]
 or in a project.
 
 ```bash
-# latest version from latest tag
-npm install --save-dev hasura-cli@latest
+# latest version from latest tag (Same as hasura-cli@latest)
+npm install --save-dev hasura-cli
+
+# specific version
+npm install --save-dev hasura-cli@1.0.0
 
 # latest version from beta tag
 npm install --save-dev hasura-cli@beta
 
-# or specific version
-npm install --save-dev hasura-cli@1.0.0
-
-# latest version regardless of tag
-npm install --save-dev hasura-cli
+# latest version from alpha tag
+npm install --save-dev hasura-cli@alpha
 ```
 
 Then you will be able to run hasura command.
