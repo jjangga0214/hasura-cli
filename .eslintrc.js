@@ -28,6 +28,7 @@ module.exports = {
     'jest/prefer-expect-assertions': 'off',
     'jest/no-test-return-statement': 'off',
     'import/prefer-default-export': 'off',
+    'import/extensions': 'off',
     'no-console': 'off',
     'no-iterator': 'off',
     'no-restricted-syntax': 'off',
