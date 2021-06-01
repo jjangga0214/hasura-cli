@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run via 'yarn ts'",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["ts", "${input:filepath}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": ".",
+      "runtimeExecutable": "yarn"
+    },
+    {
+      "name": "Debug via 'yarn test --testNamePattern",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "test",
+        "--testNamePattern",
+        "'${input:--testNamePattern}'"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": ".",
+      "runtimeExecutable": "yarn"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "filepath",
+      "type": "promptString",
+      "description": "What is the file path relative from workspace root?"
+    },
+    {
+      "id": "--testNamePattern",
+      "type": "promptString",
+      "description": "What is the argument for `--testNamePattern` option?"
+    }
+  ]
+}

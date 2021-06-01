@@ -1,6 +1,6 @@
 {
   "name": "hasura-cli",
-  "version": "2.0.0-alpha.10",
+  "version": "2.0.0-alpha.11",
   "license": "MIT",
   "engines": {
     "node": ">=8"
@@ -28,6 +28,7 @@
     "dev:build": "concurrently 'tsc -w -i' 'nodemon dist/index.js'",
     "dev:no-respawn": "dotenv -- ts-node-dev --transpileOnly src/index.ts",
     "dev": "dotenv -- ts-node-dev --transpileOnly --respawn src/index.ts",
+    "ts": "dotenv -- ts-node",
     "start": "node dist/index.js"
   },
   "husky": {
@@ -77,7 +78,7 @@
     "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-markdown": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "husky": ">=1",
+    "husky": "^6.0.0",
     "jest": "^26.6.3",
     "jest-junit": "^7.0.0",
     "lint-staged": ">=8",
@@ -86,7 +87,7 @@
     "prettier": "^1.18.2",
     "shx": "^0.3.2",
     "ts-jest": "^26.5.4",
-    "ts-node-dev": "^1.0.0-pre.43",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^3.6.3",
     "verdaccio": "^4.3.0"
   },

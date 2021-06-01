@@ -14,7 +14,13 @@ describe('install', () => {
 
     const askVersion = async (dest: string): Promise<string> => {
       try {
-        const { stdout } = await exec(`${dest} version --skip-update-check`)
+        const { stdout, stderr } = await exec(
+          `${dest} version --skip-update-check`,
+        )
+        // Why stderr? REF: https://github.com/hasura/graphql-engine/issues/6998
+        if (version === '2.0.0-alpha.11') {
+          return stderr
+        }
         return stdout
       } catch (err) {
         const { stdout } = await exec(`${dest} version`)
@@ -38,7 +44,6 @@ describe('install', () => {
 
     const stdout = await askVersion(dest)
     console.log(stdout)
-
     try {
       // When tag and printed version are same
       expect(stdout).toContain(version)

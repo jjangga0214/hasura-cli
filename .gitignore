@@ -1,4 +1,5 @@
 test/**/tmp
+tmp*
 reports
 junit.xml
 dist
