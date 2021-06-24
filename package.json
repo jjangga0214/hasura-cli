@@ -43,12 +43,10 @@
       "echo \"Error: Change to dummy file 'hasura' is blocked by default to prevent accidental commit of binary. If you want to change its content, try again by ignoring husky.\" && exit 1"
     ],
     "*.js": [
-      "yarn format:js",
-      "git add"
+      "yarn format:js"
     ],
     "*.ts": [
-      "yarn format:ts",
-      "git add"
+      "yarn format:ts"
     ],
     "*.md": [
       "yarn format:md"
