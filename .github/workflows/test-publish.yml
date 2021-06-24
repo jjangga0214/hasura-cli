@@ -122,11 +122,12 @@ jobs:
         run: |
           # From npm v7, `npm adduser` is required before `npm publish`. 
           # (adduser REF: https://docs.npmjs.com/cli/v7/commands/npm-adduser)
-          # However, `npm adduser` is not only interactive 
-          # but also able to be substituted by setting `_authToken`.
-          # By local verdaccio setting, the _authToken can be any random string,
+          # However, `npm adduser` is interactive 
+          # and can be substituted by setting `_authToken`.
+          # By local verdaccio setting(verdaccio/conf/default.yaml), 
+          # the _authToken can be any random string,
           # and anyone can publish hasura-cli.
-          npm config set //http://localhost:4873/:_authToken helloworld
+          npm config set //localhost:4873/:_authToken helloworld
           npm publish --registry http://localhost:4873
 
       - name: Use Node.js ${{ matrix.node-version }}
