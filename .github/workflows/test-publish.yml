@@ -119,7 +119,15 @@ jobs:
           forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
       - name: Publish To Local NPM Registry
-        run: npm publish --registry http://localhost:4873
+        run: |
+          # From npm v7, `npm adduser` is required before `npm publish`. 
+          # (adduser REF: https://docs.npmjs.com/cli/v7/commands/npm-adduser)
+          # However, `npm adduser` is not only interactive 
+          # but also able to be substituted by setting `_authToken`.
+          # By local verdaccio setting, the _authToken can be any random string,
+          # and anyone can publish hasura-cli.
+          npm config set //http://localhost:4873/:_authToken helloworld
+          npm publish --registry http://localhost:4873
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
