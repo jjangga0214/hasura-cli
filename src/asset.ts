@@ -38,8 +38,6 @@ export async function download({
   })
 }
 
-export async function getArch() {}
-
 export async function getUrl(
   tag: string, // e.g. "v1.0.0-beta.6" or "v1.0.0-alpha29"
   platform: string = process.platform,
