@@ -64,6 +64,6 @@ describe('install', () => {
         console.error(err)
       }
     },
-    90 * 1000,
+    180 * 1000,
   )
 })
