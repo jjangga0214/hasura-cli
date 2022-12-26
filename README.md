@@ -59,7 +59,7 @@ For example,
 
 ```bash
 # print hasura version
-npx hasura version
+npx hasura-cli version
 ```
 
 Or configure npm scripts on package.json in the way you want.
