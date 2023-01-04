@@ -44,7 +44,7 @@ or in a project.
 npm install --save-dev hasura-cli
 
 # specific version
-npm install --save-dev hasura-cli@1.0.0
+npm install --save-dev hasura-cli@2.0.0
 
 # latest version from beta tag
 npm install --save-dev hasura-cli@beta
