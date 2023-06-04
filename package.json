@@ -1,6 +1,6 @@
 {
   "name": "hasura-cli",
-  "version": "2.25.0",
+  "version": "2.11.6",
   "license": "MIT",
   "engines": {
     "node": ">=8"
