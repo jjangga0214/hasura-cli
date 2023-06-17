@@ -2,7 +2,7 @@ module jjangga0214/hasura-cli/tool
 
 go 1.20
 
-require github.com/hasura/graphql-engine/cli/v2 v2.26.0
+require github.com/hasura/graphql-engine/cli/v2 v2.27.0
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.1 // indirect
