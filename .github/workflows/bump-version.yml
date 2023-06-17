@@ -1,0 +1,59 @@
+name: Bump version
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'tool/go.mod'
+jobs:
+  # [original source of job "check-if-to-skip"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
+  check-if-to-skip:
+    runs-on: ubuntu-latest
+    # skip commits with [ci skip] or [skip ci], except on an action triggered by push of a version tag
+    # TODO: remove or update git tag description
+    if: "!( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') )"
+    steps:
+      - name: Check [ci skip] or [skip ci]
+        run: exit 0
+
+  bump:
+    needs: check-if-to-skip
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ steps.nvmrc.outputs.nvmrc }}
+
+      - name: Get yarn cache
+        id: yarn-cache-dir
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Dependencies
+        run: yarn install --silent --frozen-lockfile --ignore-scripts --ignore-engines
+        env:
+          CI: true
+
+      - name: version bump
+        run: tool/extract.sh
+      - name: commit version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: bump version"
+
