@@ -34,7 +34,7 @@ async function getGithubReleases() {
     owner: 'hasura',
     repo: 'graphql-engine',
     // eslint-disable-next-line @typescript-eslint/camelcase
-    per_page: 10,
+    per_page: 20,
     order: 'desc',
     sort: 'created_at',
   })
