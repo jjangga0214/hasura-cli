@@ -35,4 +35,8 @@ jobs:
           CI: true
 
       - name: Auto Publish
-        run: node workflows/auto-publish.mjs
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          node workflows/auto-publish.mjs
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
