@@ -39,7 +39,9 @@ jobs:
           CI: true
 
       - name: Auto Publish
-        run: |
+        run: |        
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           node workflows/auto-publish.mjs
         env:
