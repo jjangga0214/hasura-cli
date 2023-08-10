@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          # Number of commits to fetch. 0 indicates all history for all branches and tags.
+          # Default: 1
+          fetch-depth: 0 # Otherwise, you will failed to push refs to dest repo
 
       - name: Read .nvmrc
         id: nvmrc
