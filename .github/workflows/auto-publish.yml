@@ -11,11 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           # Number of commits to fetch. 0 indicates all history for all branches and tags.
           # Default: 1
           fetch-depth: 0 # Otherwise, you will failed to push refs to dest repo
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Read .nvmrc
         id: nvmrc
@@ -44,7 +45,7 @@ jobs:
 
       - name: Auto Publish
         run: |        
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           node workflows/auto-publish.mjs
