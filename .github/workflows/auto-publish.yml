@@ -4,6 +4,10 @@ on:
 
 jobs:
   auto-publish:
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push
+      contents: write
+
     runs-on: ubuntu-latest
 
     steps:
