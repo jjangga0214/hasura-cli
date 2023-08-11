@@ -83,7 +83,9 @@ async function main() {
     await $$`yarn test`
     await $$`git checkout hasura` // Reset ./hasura file if it's modified by postinstall lifecycle. This is preventive purpose.
     await $$`git add package.json`
-    const message = `chore(release): v${version} \n\n[skip ci]`
+    const message = `chore(release): v${version}
+
+[skip ci]`
     await $$`git commit -m ${message}` // message is quoted(escaped) automatically by execa
     await $$`git tag v${version}`
     await $$`git push`
