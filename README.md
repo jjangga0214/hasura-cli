@@ -7,6 +7,8 @@ An npm package that automatically installs and wraps **Hasura CLI** binary in is
 [![npm alpha version](https://img.shields.io/npm/v/hasura-cli/alpha?style=flat-square&labelColor=black&color=fedcba&&label=alpha)](https://www.npmjs.com/package/hasura-cli)
 [![npm download](https://img.shields.io/npm/dm/hasura-cli?style=flat-square&labelColor=black&label=npm%20download)](https://www.npmjs.com/package/hasura-cli)
 
+The package is automatically published (always up-to-date) when a new version is released from Hasura's side.
+
 [![license](https://img.shields.io/badge/license-MIT-ff4081.svg?style=flat-square&labelColor=black)](./LICENSE)
 [![test](https://img.shields.io/badge/test-jest-7c4dff.svg?style=flat-square&labelColor=black)](./jest.config.js)
 [![code style:airbnb](https://img.shields.io/badge/code_style-airbnb-448aff.svg?style=flat-square&labelColor=black)](https://github.com/airbnb/javascript)
