@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron:  '0 * * * *' # Execute the job every hour
+    - cron:  '0 0 * * *' # Execute the job every day at 00:00
 
 jobs:
   auto-publish:
