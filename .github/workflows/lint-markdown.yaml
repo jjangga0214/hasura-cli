@@ -1,0 +1,43 @@
+name: Lint markdown
+
+on:
+  push:
+    paths:
+      - '**.md'
+      - '.markdownlint.json'
+      - 'package.json'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**.md'
+      - '.markdownlint.json'
+      - 'package.json'
+      - '.github/workflows/**'
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvmrc.outputs.version }}
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --silent --frozen-lockfile --ignore-scripts --ignore-engines
+        env:
+          CI: true
+
+      - name: Lint
+        run: yarn lint:md .
