@@ -79,7 +79,7 @@ Or configure npm scripts on package.json in the way you want.
 
 ## Support
 
-Generally, it works on 64 bits architecture of any Linux, macOS, and Windows with node@>=8.
+Generally, it works on 64 bits architecture of any Linux, macOS, and Windows with node@>=16.
 
 ## Development (Contribution)
 
