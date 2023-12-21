@@ -1,6 +1,6 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import axios from 'axios'
-import fs from 'fs'
-import path from 'path'
 
 interface DownloadOptions {
   url: string
@@ -44,7 +44,8 @@ export async function getUrl(
   arch: string = process.arch, // REF: https://nodejs.org/api/process.html#processarch
 ): Promise<string> {
   const prefix =
-    tag.slice(0, -1).endsWith('alpha0') && parseInt(tag.slice(-1), 10) < 5
+    tag.slice(0, -1).endsWith('alpha0') &&
+    Number.parseInt(tag.slice(-1), 10) < 5
       ? ''
       : 'cli-'
   // Asset name

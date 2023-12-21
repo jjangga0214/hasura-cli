@@ -38,6 +38,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          node workflows/auto-publish.mjs
+          node workflows/auto-publish.js
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
