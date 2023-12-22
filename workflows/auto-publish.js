@@ -77,7 +77,7 @@ async function main() {
   for (const version of versions) {
     console.log(`Publishing ${version}`)
     await changeVersion(version)
-    await $`yarn test`
+    await $`pnpm test`
     await $`git checkout hasura` // Reset ./hasura file if it's modified by postinstall lifecycle. This is preventive purpose.
     await $`git add package.json`
     const message = `chore(release): v${version}
@@ -90,7 +90,7 @@ async function main() {
     const parsed = semver.parse(version)
     const tag = parsed?.prerelease[0] // e.g. 'alpha', 'beta', or null(stable)
     console.log(tag)
-    await (tag ? $`npm publish --tag ${tag}` : $`npm publish`)
+    await (tag ? $`pnpm publish --tag ${tag}` : $`pnpm publish`)
     await setTimeout(5 * 1000) // wait for 5 seconds
   }
 }

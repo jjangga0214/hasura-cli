@@ -44,6 +44,7 @@ export async function getUrl(
   arch: string = process.arch, // REF: https://nodejs.org/api/process.html#processarch
 ): Promise<string> {
   const prefix =
+    tag.startsWith('v1.') &&
     tag.slice(0, -1).endsWith('alpha0') &&
     Number.parseInt(tag.slice(-1), 10) < 5
       ? ''

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Number of commits to fetch. 0 indicates all history for all branches and tags.
           # Default: 1
@@ -26,10 +26,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.nvmrc.outputs.version }}
-          cache: 'yarn'
+          cache: pnpm
 
       - name: Install Dependencies
-        run: yarn install --silent --frozen-lockfile --ignore-scripts --ignore-engines
+        run: pnpm install --silent --frozen-lockfile --ignore-scripts
         env:
           CI: true
 
@@ -37,7 +37,6 @@ jobs:
         run: |        
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           node workflows/auto-publish.js
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

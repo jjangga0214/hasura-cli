@@ -12,12 +12,12 @@
     "verdaccio": "verdaccio --config ./verdaccio/conf/default.yaml",
     "lint": "eslint --fix",
     "lint:md": "markdownlint --fix",
-    "lint:all": "yarn lint . && yarn lint:md .",
+    "lint:all": "pnpm lint . && pnpm lint:md .",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest",
-    "test:coverage": "yarn test --coverage",
+    "test:coverage": "pnpm test --coverage",
     "build": "shx rm -rf dist/* && tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "pnpm build",
     "dev:build": "concurrently 'tsc -w -i' 'nodemon dist/index.js'",
     "dev:no-respawn": "dotenv -- ts-node-dev --transpileOnly src/index.ts",
     "dev": "dotenv -- ts-node-dev --transpileOnly --respawn src/index.ts",
@@ -30,13 +30,13 @@
       "echo \"Error: Change to dummy file 'hasura' is blocked by default to prevent accidental commit of binary. If you want to change its content, try again by ignoring husky.\" && exit 1"
     ],
     "*.{c,m,}{j,t}s": [
-      "yarn lint"
+      "pnpm lint"
     ],
     "*.json{c,}": [
-      "yarn lint"
+      "pnpm lint"
     ],
     "*.md": [
-      "yarn lint:md"
+      "pnpm lint:md"
     ]
   },
   "prettier": "@jjangga0214/prettier-config",
@@ -79,7 +79,6 @@
   },
   "dependencies": {
     "axios": "^1.6.0",
-    "chalk": "^5.3.0",
     "chalk-template": "^1.1.0"
   },
   "exports": "./dist/index.js",
