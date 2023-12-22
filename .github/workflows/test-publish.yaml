@@ -3,9 +3,6 @@ name: Test and Conditionally Publish
 on:
   push:
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.markdownlint.json'
       - '.anylint'
       - '.editorconfig'
       - '.env.example'
@@ -17,9 +14,6 @@ on:
     branches:
       - master
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.markdownlint.json'
       - '.anylint'
       - '.editorconfig'
       - '.env.example'
@@ -29,53 +23,42 @@ on:
       - 'LICENSE'
 
 jobs:
-  # [original source of job "check-if-to-skip"](https://github.com/srz-zumix/ci-skip/blob/master/.github/workflows/main.yml#L15)
-  check-if-to-skip:
-    runs-on: ubuntu-latest
-    # skip commits with [ci skip] or [skip ci], except on an action triggered by push of a version tag
-    # TODO: remove or update git tag description
-    if: "!( contains(github.event.head_commit.message, '[ci skip]') || contains(github.event.head_commit.message, '[skip ci]') )"
-    steps:
-      - name: Check [ci skip] or [skip ci]
-        run: exit 0
 
   test:
-    needs: check-if-to-skip
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.12.1
+          run_install: false # For cache      
 
       - name: Read .nvmrc
         id: nvmrc
-        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
 
-      - name: Use Node.js
-        uses: actions/setup-node@v2
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.nvmrc.outputs.nvmrc }}
-
-      - name: Get yarn cache
-        id: yarn-cache-dir
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: ${{ steps.nvmrc.outputs.version }}
+          cache: pnpm
 
       - name: Install Dependencies
-        run: yarn install --silent --frozen-lockfile --ignore-scripts --ignore-engines
+        run: pnpm install --silent --frozen-lockfile --ignore-scripts
         env:
           CI: true
 
       - name: Test And Measure Coverage
-        run: yarn test:coverage --ci
+        run: pnpm test:coverage --ci
 
       - name: Lint
-        run: yarn lint:code .
+        run: pnpm lint .
+
+      - name: Lint Markdown
+        run: pnpm lint:md .        
 
   e2etest:
     needs: test
@@ -83,39 +66,41 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14, 16, 17, 18]
+        node-version: [16, 18, 20]
         os: [ubuntu-latest, macOS-latest, windows-latest, windows-2019]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.12.1
+          run_install: false # For cache      
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
       - name: Install Dependencies
         # only installs packages needed to publish to save time
-        run: yarn add --ignore-scripts --ignore-engines -D typescript shx
+        run: pnpm install --silent --frozen-lockfile --ignore-scripts
         env:
           CI: true
-
-      - name: Use Node.js 16 # for unauthenticated publish, npm version should be high enough
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
 
       - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         run: |
           # trailing `&` detaches process from foreground
-          yarn verdaccio &
+          pnpm verdaccio &
 
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         run: |
-          npm install --global forever
+          pnpm add --global forever
           forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
 
       - name: Publish To Local NPM Registry
@@ -129,11 +114,6 @@ jobs:
           # and anyone can publish hasura-cli.
           npm config set //localhost:4873/:_authToken helloworld
           npm publish --registry http://localhost:4873
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
 
       - name: Test Installation
         run: |
@@ -149,28 +129,34 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v2.') && ( github.event.base_ref == 'refs/heads/master' )
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: 16
+          version: 8.12.1
+          run_install: false # For cache      
 
-      - name: Build And Publish To Npm
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvmrc.outputs.version }}
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --silent --frozen-lockfile --ignore-scripts
+        env:
+          CI: true
+
+      - name: Build and Publish
         # only runs if name of git tag starts with 'v1.' and on branch master
         run: |
-          # only installs packages needed to publish to save time
-          yarn add --ignore-scripts --ignore-engines -D typescript shx
-          yarn build # to prevent a mistake thougth there is already prepublishOnly lifecycle hook.
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish
+          pnpm build # to prevent a mistake thougth there is already prepublishOnly lifecycle hook.
+          pnpm publish
         env:
           CI: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Notify Slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: pullreminders/slack-action@master
-        with:
-          args: '{\"channel\":\"C5KTCLYG7\",\"text\":\"hasura-cli is published to NPM.\"}'
