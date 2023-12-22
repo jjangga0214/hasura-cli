@@ -1,10 +1,12 @@
+import { createRequire } from 'node:module'
 import chalk from 'chalk-template'
 import { install, versionFromPackageJson } from './install.js'
+
+const require = createRequire(import.meta.url)
 
 const {
   name,
   bugs: { url: issueUrl },
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 } = require('../package.json')
 
 const HASURA_CLI_INSTALL =

@@ -88,12 +88,12 @@
     "hasura"
   ],
   "bin": {
-    "hasura": "./hasura"
+    "hasura": "hasura"
   },
   "description": "A package that automatically installs and wraps Hasura CLI binary in isolated manner",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jjangga0214/hasura-cli.git"
+    "url": "git+https://github.com/jjangga0214/hasura-cli.git"
   },
   "bugs": {
     "url": "https://github.com/jjangga0214/hasura-cli/issues"

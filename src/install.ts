@@ -1,7 +1,7 @@
-import path from 'node:path'
 import fs from 'node:fs'
-import chalk from 'chalk-template'
+import path from 'node:path'
 import { createRequire } from 'node:module'
+import chalk from 'chalk-template'
 import { getUrl, download } from './asset.js'
 
 const require = createRequire(import.meta.url)

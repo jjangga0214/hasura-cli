@@ -29,9 +29,9 @@ The [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/mast
 
 ## Installation
 
-You can just simply install hasura-cli through npm or yarn. Note that this package follows version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
+You can simply install hasura-cli through npm, yarn or pnpm. Note that this package follows a version of the [**Original Hasura CLI**](https://github.com/hasura/graphql-engine/tree/master/cli). If you want to check its releases, go [here](https://github.com/hasura/graphql-engine/releases).
 
-Currently there are 3 npm tags (npm tags are different from versions), `latest`, `beta` and `alpha`. `latest` tag refers to Hasura's latest stable version(e.g. [![npm version](https://img.shields.io/npm/v/hasura-cli?style=flat-square&labelColor=black&label=version)](https://www.npmjs.com/package/hasura-cli)), while `beta` and `alpha`, respectively beta version(e.g. [![npm beta version](https://img.shields.io/npm/v/hasura-cli/beta?style=flat-square&labelColor=black&color=ffd900&label=beta)](https://www.npmjs.com/package/hasura-cli)) and alpha version(e.g. [![npm alpha version](https://img.shields.io/npm/v/hasura-cli/alpha?style=flat-square&labelColor=black&color=fedcba&&label=alpha)](https://www.npmjs.com/package/hasura-cli)).
+Currently, there are 3 npm tags (npm tags are different from versions), `latest`, `beta` and `alpha`. `latest` tag refers to Hasura's latest stable version(e.g. [![npm version](https://img.shields.io/npm/v/hasura-cli?style=flat-square&labelColor=black&label=version)](https://www.npmjs.com/package/hasura-cli)), while `beta` and `alpha`, respectively beta version(e.g. [![npm beta version](https://img.shields.io/npm/v/hasura-cli/beta?style=flat-square&labelColor=black&color=ffd900&label=beta)](https://www.npmjs.com/package/hasura-cli)) and alpha version(e.g. [![npm alpha version](https://img.shields.io/npm/v/hasura-cli/alpha?style=flat-square&labelColor=black&color=fedcba&&label=alpha)](https://www.npmjs.com/package/hasura-cli)).
 
 Of course, you can install it globally,
 
@@ -110,7 +110,7 @@ First, create `.env` file, and configure it as you want.
 cp .env.example .env
 ```
 
-You can simply populate the variables by executing `yarn dev` or `yarn dev:no-respawn`. Otherwise, you have to manually feed them (e.g. `dotenv -- <your command>`). That's because this project doesn't use [`dotenv`](https://github.com/motdotla/dotenv), but [`dotenv-cli`](https://github.com/entropitor/dotenv-cli). So, the application does not read `.env` by itself.
+You can simply populate the variables by executing `pnpm dev` or `pnpm dev:no-respawn`. Otherwise, you have to manually feed them (e.g. `dotenv -- <your command>`). That's because this project doesn't use [`dotenv`](https://github.com/motdotla/dotenv), but [`dotenv-cli`](https://github.com/entropitor/dotenv-cli). So, the application does not read `.env` by itself.
 
 #### `HASURA_CLI_INSTALL` (boolean)
 
@@ -129,39 +129,38 @@ A file name of Hasura CLI.
 Install dependencies. Lifecycle script `postinstall` is only for clients who want to install the binary. So, ignore it with `--ignore-scripts` option. It should also be used on CI.
 
 ```bash
-yarn install --ignore-scripts
+pnpm install --ignore-scripts
 ```
 
 On development, you can run
 
 ```bash
-yarn dev
+pnpm dev
 # or
-yarn dev:no-respawn
+pnpm dev:no-respawn
 # or
-yarn dev:build
+pnpm dev:build
 ```
 
-`yarn dev` watches source code and restarts a process when file changes. It does not write compiled js to the file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) does watching, compiling and restarting.
+`pnpm dev` watches source code and restarts a process when a file changes. It does not write compiled js to the file system. [ts-node-dev](https://github.com/whitecolor/ts-node-dev) watches, compiles and restarts.
 
-`yarn dev:no-respawn` does the same thing except it does not restart.
+`pnpm dev:no-respawn` does the same thing except it does not restart.
 
-`yarn dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and run (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simualtaneously.
+`pnpm dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and runs (`nodemon``) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs`tsc` and `nodemon` simultaneously.
 
 To manually test compiled js, you can run
 
 ```bash
-yarn build # compiles ts to js
-yarn start # runs dist/index.js
+pnpm build # compiles ts to js
+pnpm start # runs dist/index.js
 ```
 
 ### Other scripts
 
 ```bash
-yarn test # runs all tests (against "*.test.ts")
-yarn test:coverage # runs all tests and measures coverage
-yarn lint # lint
-yarn format # format(fix)
+pnpm test # runs all tests (against "*.test.ts")
+pnpm test:coverage # runs all tests and measures coverage
+pnpm lint . # lint
 ```
 
 ### How does this work?
@@ -170,7 +169,7 @@ Here is a brief file system tree.
 
 ```
 hasura-cli
-├── dist // to be generated by build process (e.g. `yarn build`), and ignored by git
+├── dist // to be generated by build process (e.g. `pnpm build`), and ignored by git
 ├── hasura
 ├── package.json
 └── src
@@ -190,9 +189,9 @@ package.json exposes the command `hasura` as a symlink to the flie `hasura`. Onl
 }
 ```
 
-However, when publishing (`npm publish` on development environment) the package, the file `hasura` is just a dummy 'text' file, not a binary flie. The file will be replaced to a binary only when a client installs the package on Linux or macOS. On Windows, unlike Linux or macOS, the file `hasura` is to be removed, and a new file `hasura.exe` will be created. `postinstall` lifecycle hook executes `dist/index.js`, which would install the platform-specfic binary.
+However, when publishing the package, the file `hasura` is just a dummy 'text' file, not a binary file. The file will be replaced with a binary only when a client installs the package on Linux or macOS. On Windows, unlike Linux or macOS, the file `hasura` is to be removed, and a new file `hasura.exe` will be created. `postinstall` lifecycle hook executes `dist/index.js`, which would install the platform-specific binary.
 
-[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on GitHub as release assets. `src/asset.ts` exposes functions of _"getting GitHub asset url"_ and _"downloading the asset from the url"_. `src/install.ts` exposes a function of _"composing them and handling how installation should be processed"_. `src/index.ts` uses the function to actually install the asset with some additional control.
+[The binaries](https://github.com/hasura/graphql-engine/releases) are hosted on GitHub as release assets. `src/asset.ts` exposes functions of _"getting GitHub asset URL"_ and _"downloading the asset from the URL"_. `src/install.ts` exposes a function of _"composing them and handling how the installation should be processed"_. `src/index.ts` uses the function to install the asset with some additional control.
 
 ## License
 
