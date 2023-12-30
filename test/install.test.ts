@@ -1,40 +1,40 @@
 /* eslint-disable jest/no-conditional-in-test */
-import util from 'node:util'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 import fs from 'node:fs'
 import { dirname } from 'dirname-filename-esm'
+import { $ as $$ } from 'execa'
 import { install } from '../src/install.js'
 
 const require = createRequire(import.meta.url)
-const exec = util.promisify(require('child_process').exec)
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { version }: { version: string } = require('../package.json')
 
-const { version } = require('../package.json')
+const root = path.join(dirname(import.meta), '..')
+const $ = $$({ cwd: root, stdio: 'pipe' })
 
 describe('install', () => {
   it(
-    'install, execute, and check version of cli',
+    'installs, executes, and checks the version of the cli',
     async () => {
       expect.hasAssertions()
+      const destDir = path.join(dirname(import.meta), 'tmp')
 
       const askVersion = async (dest: string): Promise<string> => {
         try {
-          const { stdout, stderr } = await exec(
-            `${dest} version --skip-update-check`,
-          )
-          // Why stderr? REF: https://github.com/hasura/graphql-engine/issues/6998
+          const { stdout, stderr } =
+            await $`${dest} version --skip-update-check`
 
+          // Why stderr? REF: https://github.com/hasura/graphql-engine/issues/6998
           if (version === '2.0.0-alpha.11') {
             return stderr
           }
           return stdout
         } catch {
-          const { stdout } = await exec(`${dest} version`)
+          const { stdout } = await $`${dest} version`
           return stdout
         }
       }
-      const destDir = path.resolve(dirname(import.meta), 'tmp')
-
       if (!fs.existsSync(destDir)) {
         fs.mkdirSync(destDir)
       }

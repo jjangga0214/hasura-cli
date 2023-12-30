@@ -4,6 +4,7 @@ import { install, versionFromPackageJson } from './install.js'
 
 const require = createRequire(import.meta.url)
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const {
   name,
   bugs: { url: issueUrl },
@@ -12,7 +13,7 @@ const {
 const HASURA_CLI_INSTALL =
   !process.env.HASURA_CLI_INSTALL || process.env.HASURA_CLI_INSTALL === 'true'
 
-async function main() {
+async function main(): Promise<void> {
   if (HASURA_CLI_INSTALL) {
     try {
       await install({
@@ -36,5 +37,5 @@ async function main() {
   }
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
+// eslint-disable-next-line unicorn/prefer-top-level-await, @typescript-eslint/no-floating-promises
 main()

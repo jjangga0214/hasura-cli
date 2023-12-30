@@ -27,6 +27,7 @@ export async function download({
     },
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   res.data.pipe(writer)
 
   return new Promise((resolve, reject): void => {
@@ -38,11 +39,11 @@ export async function download({
   })
 }
 
-export async function getUrl(
+export function getUrl(
   tag: string, // e.g. "v1.0.0-beta.6" or "v1.0.0-alpha29"
   platform: string = process.platform,
   arch: string = process.arch, // REF: https://nodejs.org/api/process.html#processarch
-): Promise<string> {
+): string {
   const prefix =
     tag.startsWith('v1.') &&
     tag.slice(0, -1).endsWith('alpha0') &&

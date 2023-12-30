@@ -6,7 +6,10 @@ import { getUrl, download } from './asset.js'
 
 const require = createRequire(import.meta.url)
 
-export const { version: versionFromPackageJson } = require('../package.json')
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+export const {
+  version: versionFromPackageJson,
+}: { version: string } = require('../package.json')
 
 export function tagFromVersion(version: string): string {
   return `v${version}`
@@ -28,7 +31,7 @@ export async function install({
   verbose = false,
 }: InstallOptions = {}): Promise<string> {
   const tag = tagFromVersion(version)
-  const url = await getUrl(tag)
+  const url = getUrl(tag)
   const log = (msg: string): void => {
     if (verbose) {
       console.log(msg)
