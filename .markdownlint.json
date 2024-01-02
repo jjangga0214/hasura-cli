@@ -1,8 +1,5 @@
 {
-  "default": true,
-  "MD013": false,
-  "MD042": false,
-  "MD033": false,
+  "extends": "@jjangga0214/markdownlint-config",
   "MD026": false,
   "MD040": false
 }

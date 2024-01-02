@@ -1,4 +1,4 @@
-import { config } from '@jjangga0214/jest-config'
+import config from '@jjangga0214/jest-config'
 
 export default {
   ...config,
