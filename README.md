@@ -146,7 +146,7 @@ pnpm dev:build
 
 `pnpm dev:no-respawn` does the same thing except it does not restart.
 
-`pnpm dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and runs (`nodemon``) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs`tsc` and `nodemon` simultaneously.
+`pnpm dev:build` logically does the identical job at the high viewpoint. But it compiles (`tsc -w`) ts, writes js on file system, and runs (`nodemon`) js. [concurrently](https://github.com/kimmobrunfeldt/concurrently) runs `tsc` and `nodemon` simultaneously.
 
 To manually test compiled js, you can run
 
