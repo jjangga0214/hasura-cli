@@ -18,14 +18,16 @@ jobs:
           fetch-depth: 0 # Otherwise, you will failed to push refs to dest repo
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: false # For cache
 
-      - name: Set Up Node.js
+      # pnpm should be installed before the setup-node action. REF: https://github.com/actions/setup-node/issues/530
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.nvmrc.outputs.version }}
+          node-version-file: '.nvmrc'
           cache: pnpm
 
       - name: Install Dependencies
@@ -37,6 +39,6 @@ jobs:
         run: |        
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          node workflows/auto-publish.js
+          pnpm ts workflows/auto-publish.ts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

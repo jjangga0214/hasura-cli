@@ -33,32 +33,26 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.12.1
-          run_install: false # For cache      
+          run_install: false # For cache
 
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-
-      - name: Set Up Node.js
+      # pnpm should be installed before the setup-node action. REF: https://github.com/actions/setup-node/issues/530
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.nvmrc.outputs.version }}
+          node-version-file: '.nvmrc'
           cache: pnpm
 
       - name: Install Dependencies
         run: pnpm install --silent --frozen-lockfile --ignore-scripts
-        env:
-          CI: true
 
-      - name: Test And Measure Coverage
-        run: pnpm test:coverage --ci
+      - name: Test
+        run: pnpm test
 
       - name: Lint
-        run: pnpm lint .
+        run: pnpm eslint .
 
       - name: Lint Markdown
-        run: pnpm lint:md .        
+        run: pnpm markdownlint .        
 
   e2etest:
     needs: test
@@ -75,7 +69,6 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.12.1
           run_install: false # For cache      
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -85,10 +78,7 @@ jobs:
           cache: pnpm
 
       - name: Install Dependencies
-        # only installs packages needed to publish to save time
         run: pnpm install --silent --frozen-lockfile --ignore-scripts
-        env:
-          CI: true
 
       - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
@@ -134,29 +124,21 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.12.1
           run_install: false # For cache      
-
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
 
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.nvmrc.outputs.version }}
+          node-version-file: '.nvmrc'
           cache: pnpm
 
       - name: Install Dependencies
         run: pnpm install --silent --frozen-lockfile --ignore-scripts
-        env:
-          CI: true
 
       - name: Build and Publish
         # only runs if name of git tag starts with 'v1.' and on branch master
         run: |
-          pnpm build # to prevent a mistake thougth there is already prepublishOnly lifecycle hook.
+          pnpm build # to prevent a mistake though there is already prepublishOnly lifecycle hook.
           pnpm publish
         env:
-          CI: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

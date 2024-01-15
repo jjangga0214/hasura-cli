@@ -1,30 +1,31 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import * as fs from 'node:fs/promises'
+import { setTimeout } from 'node:timers/promises'
 import axios from 'axios'
 import { Octokit } from 'octokit'
 import * as semver from 'semver'
-import * as fs from 'fs/promises'
-import path from 'node:path'
+import path from 'upath'
 import { $ as $$ } from 'execa'
 import { dirname } from 'dirname-filename-esm'
-import { setTimeout } from 'timers/promises'
+import { readPackage } from 'read-pkg'
+
+const projectRoot = path.resolve(dirname(import.meta), '..')
 
 /**
  * Returns versions in recent order from npm registry
- *
- * @returns {Promise<string>}
  */
-async function getPublishedVersion() {
-  const res = await axios.get('https://registry.npmjs.org/hasura-cli')
-  const versions = Object.keys(res.data.versions)
+async function getPublishedVersions(): Promise<Set<string>> {
+  const res = await axios.get<{ versions: Record<string, unknown> }>(
+    'https://registry.npmjs.org/hasura-cli',
+  )
+  const versions = new Set(Object.keys(res.data.versions))
   return versions
 }
 
 /**
  * Returns versions in recent order from github releases
- *
- * @returns {Promise<string>}
  */
-async function getGithubReleases() {
+async function getGithubReleases(): Promise<string[]> {
   const octokit = new Octokit({
     // auth: process.env.GITHUB_TOKEN, // When using GraphQL, auth token is required.
   })
@@ -37,21 +38,20 @@ async function getGithubReleases() {
     sort: 'created_at',
   })
 
-  // eslint-disable-next-line camelcase
-  return releases.data.map(({ tag_name }) => semver.clean(tag_name)) // removes 'v' prefix
+  // tag_name: 'v3.alpha.12-19-2023' will be mapped to null
+  return releases.data.map(({ tag_name }) => semver.clean(tag_name)) as string[] // removes 'v' prefix
 }
 
 /**
- * Returns versions that's not published to npm, but on github releases.
- *
- * @returns {Promise<string>} - ascending order by creation time of github releases
+ * Returns versions that's not published to npm, but on github releases
+ * in ascending order by creation time of github releases
  */
-async function versionsToPublish() {
-  const publishedVersions = await getPublishedVersion()
+async function versionsToPublish(): Promise<string[]> {
+  const publishedVersions = await getPublishedVersions()
   const githubReleases = await getGithubReleases()
-  return [...githubReleases]
+  return githubReleases
     .reverse()
-    .filter((version) => !publishedVersions.includes(version))
+    .filter((version) => !publishedVersions.has(version))
 }
 
 /**
@@ -59,22 +59,28 @@ async function versionsToPublish() {
  *
  * @param {string} version
  */
-async function changeVersion(version) {
-  const filename = path.join(dirname(import.meta), '..', 'package.json')
-  const rawPackageJson = await fs.readFile(filename, {
-    encoding: 'utf8',
+async function changeVersion(version: string) {
+  const filename = path.resolve(projectRoot, 'package.json')
+  const packageJson = await readPackage({
+    cwd: projectRoot,
   })
-  const packageJson = JSON.parse(rawPackageJson)
   packageJson.version = version
-  await fs.writeFile(filename, JSON.stringify(packageJson, undefined, 2), {
-    encoding: 'utf8',
-  })
+  await fs.writeFile(
+    filename,
+    JSON.stringify(packageJson, undefined, 2),
+    'utf8',
+  )
 }
 
 async function main() {
-  const $ = $$({ stdio: 'inherit', cwd: path.join(dirname(import.meta), '..') })
+  const $ = $$({ stdio: 'inherit', cwd: projectRoot })
   const versions = await versionsToPublish()
   for (const version of versions) {
+    // `version` of 'v3.alpha.12-19-2023' will be null
+    if (!version) {
+      continue
+    }
+
     console.log(`Publishing ${version}`)
     await changeVersion(version)
     await $`pnpm test`
@@ -95,5 +101,4 @@ async function main() {
   }
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
-main()
+await main()
