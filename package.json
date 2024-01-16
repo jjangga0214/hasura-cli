@@ -1,6 +1,6 @@
 {
   "name": "hasura-cli",
-  "version": "2.36.1",
+  "version": "2.36.2",
   "license": "MIT",
   "engines": {
     "node": ">=16"
@@ -119,5 +119,7 @@
     "graphql-engine-cli",
     "graphql",
     "graphql-cli"
-  ]
+  ],
+  "readme": "ERROR: No README data found!",
+  "_id": "hasura-cli@2.36.1"
 }
