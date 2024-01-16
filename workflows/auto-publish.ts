@@ -63,6 +63,7 @@ async function changeVersion(version: string) {
   const filename = path.resolve(projectRoot, 'package.json')
   const packageJson = await readPackage({
     cwd: projectRoot,
+    normalize: false,
   })
   packageJson.version = version
   await fs.writeFile(
