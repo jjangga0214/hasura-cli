@@ -2,6 +2,7 @@
   "name": "hasura-cli",
   "version": "2.36.1",
   "license": "MIT",
+  "private": false,
   "engines": {
     "node": ">=16"
   },
@@ -82,7 +83,6 @@
     "chalk-template": "^1.1.0"
   },
   "exports": "./dist/index.js",
-  "typescript:main": "src/index.ts",
   "files": [
     "dist",
     "hasura"
