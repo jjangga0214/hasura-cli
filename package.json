@@ -1,6 +1,6 @@
 {
   "name": "hasura-cli",
-  "version": "2.36.2",
+  "version": "2.38.1",
   "license": "MIT",
   "private": false,
   "engines": {
