@@ -1,17 +1,37 @@
 /* eslint-disable jest/no-conditional-in-test */
 import path from 'node:path'
-import { createRequire } from 'node:module'
+
 import fs from 'node:fs'
 import { dirname } from 'dirname-filename-esm'
 import { $ as $$ } from 'execa'
-import { install } from '../src/install.js'
-
-const require = createRequire(import.meta.url)
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const { version }: { version: string } = require('../package.json')
+import { install, tagFromVersion, version } from '../src/install.js'
 
 const root = path.join(dirname(import.meta), '..')
 const $ = $$({ cwd: root, stdio: 'pipe' })
+
+describe('tagFromVersion', () => {
+  test('when version is a.b.c', () => {
+    expect(tagFromVersion('2.6.1')).toBe('v2.6.1')
+    expect(tagFromVersion('2.37.0')).toBe('v2.37.0')
+  })
+
+  test('when version is a.b.c-d', () => {
+    expect(tagFromVersion('1.2.3-alpha01')).toBe('v1.2.3-alpha01')
+    expect(tagFromVersion('3.2.1-beta.12')).toBe('v3.2.1-beta.12')
+  })
+
+  test('when version is a.b.c-patch', () => {
+    expect(tagFromVersion('3.7.5-patch.1')).toBe('v3.7.5')
+    expect(tagFromVersion('12.5.3-patch.1')).toBe('v12.5.3')
+  })
+
+  test('when version is a.b.c-d-patch', () => {
+    expect(tagFromVersion('5.25.3-alpha15-patch.1')).toBe('v5.25.3-alpha15')
+    expect(tagFromVersion('111.222.333-beta.12-patch.1')).toBe(
+      'v111.222.333-beta.12',
+    )
+  })
+})
 
 describe('install', () => {
   it(

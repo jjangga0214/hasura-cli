@@ -7,11 +7,17 @@ import { getUrl, download } from './asset.js'
 const require = createRequire(import.meta.url)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-export const {
-  version: versionFromPackageJson,
-}: { version: string } = require('../package.json')
+export const { version }: { version: string } = require('../package.json')
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const _version = version
 
 export function tagFromVersion(version: string): string {
+  if (/-patch\.\d+$/.test(version)) {
+    return `v${version.replace(/-patch\.\d+$/, '')}`
+  }
+
+  // If no match is found, return the version as is, prefixed with 'v'
   return `v${version}`
 }
 
@@ -24,7 +30,7 @@ interface InstallOptions {
 }
 
 export async function install({
-  version = versionFromPackageJson,
+  version = _version,
   destDir = process.env.HASURA_CLI_DEST_DIR || '.', // default to project root,
   fileName = process.env.HASURA_CLI_DEST_FILENAME || 'hasura',
   platform = process.platform,
@@ -40,7 +46,7 @@ export async function install({
 
   log(
     chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson}}
+{bold.bgGreen.black hasura-cli}@{green ${version}}
 {blue Downloading} {bold Hasura CLI binary} {green ${tag}} from {bold ${url}}
 `,
   )
@@ -59,7 +65,7 @@ export async function install({
   }
   log(
     chalk`
-{bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson}}
+{bold.bgGreen.black hasura-cli}@{green ${version}}
 {green Installed!} {bold Hasura CLI binary} {green ${tag}} is installed to {bold ${dest}}
 `,
   )

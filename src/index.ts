@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
 import chalk from 'chalk-template'
-import { install, versionFromPackageJson } from './install.js'
+import { install, version } from './install.js'
 
 const require = createRequire(import.meta.url)
 
@@ -21,7 +21,7 @@ async function main(): Promise<void> {
       })
     } catch (error) {
       console.log(chalk`
-  {bold.bgRed.white hasura-cli}@{red ${versionFromPackageJson}}
+  {bold.bgRed.white hasura-cli}@{red ${version}}
   {red Error!} Failed to install {bold Hasura CLI binary}.
   Try {bold.bgWhite.black npm uninstall ${name}} or {bold.bgWhite.black yarn remove ${name}} and then reinstall it.
   If the issue occurs repeatedly, check if your network can access {bold https://github.com} as the the {bold Hasura CLI binary} file is hosted on Github.
@@ -31,7 +31,7 @@ async function main(): Promise<void> {
     }
   } else {
     console.log(chalk`
-  {bold.bgGreen.black hasura-cli}@{green ${versionFromPackageJson}}
+  {bold.bgGreen.black hasura-cli}@{green ${version}}
   {blue process}.{magentaBright env}.{bold.cyan HASURA_CLI_INSTALL} is {bold ${`${HASURA_CLI_INSTALL}`}}, therefore {bold hasura-cli} doesn't do anything.
     `)
   }
