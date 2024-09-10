@@ -62,11 +62,11 @@ jobs:
       matrix:
         node-version: [18, 20, 22]
         # [REF]: https://github.com/actions/runner-images
-        # Why `macos-latest-large`(x86-64) instead of `macos-latest`(arm64)? 
-        # Currently, docker is not supported on Apple silicon(ARM64) in GitHub Actions.
-        # That's because Apple silicon does not support 'nested virtualization' yet,
+        # Q. Why `macos-latest-large`(x86-64) instead of `macos-latest`(arm64)? 
+        # A. Apple silicon does not support 'nested virtualization' yet,
         # though support *will* be added from M3 + macOS 15.
         # [REF]: https://github.com/douglascamata/setup-docker-macos-action
+        # (Currently, docker is not preinstalled on macos runner image of GitHub Actions.)        
         os: [ubuntu-latest, macos-latest-large, windows-latest, windows-2019]
 
     steps:
@@ -86,9 +86,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --silent --frozen-lockfile --ignore-scripts
 
-      # - name: Setup Docker on macOS
-      #   if: startsWith(matrix.os, 'macos')
-      #   uses: douglascamata/setup-docker-macos-action@v1-alpha
+      - name: Setup Docker on macOS
+        if: startsWith(matrix.os, 'macos')
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
     
       - name: Run Local Npm Registry (Verdaccio)
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
