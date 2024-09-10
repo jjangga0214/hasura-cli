@@ -23,7 +23,6 @@ on:
       - 'LICENSE'
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
 
@@ -52,7 +51,7 @@ jobs:
         run: pnpm eslint .
 
       - name: Lint Markdown
-        run: pnpm markdownlint .        
+        run: pnpm markdownlint .
 
   e2etest:
     needs: test
@@ -62,7 +61,7 @@ jobs:
       matrix:
         node-version: [18, 20, 22]
         # [REF]: https://github.com/actions/runner-images
-        # Q. Why `macos-latest-large`(x86-64) instead of `macos-latest`(arm64)? 
+        # Q. Why `macos-latest-large`(x86-64) instead of `macos-latest`(arm64)?
         # A. Apple silicon does not support 'nested virtualization' yet,
         # though support *will* be added from M3 + macOS 15.
         # [REF]: https://github.com/douglascamata/setup-docker-macos-action
@@ -74,7 +73,7 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          run_install: false # For cache      
+          run_install: false # For cache
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -89,8 +88,8 @@ jobs:
         # Currently, docker is not preinstalled on macos runner images.
         if: startsWith(matrix.os, 'macos')
         uses: douglascamata/setup-docker-macos-action@v1-alpha
-    
-      - name: Run Local Npm Registry (Verdaccio) On Linux and macOS 
+
+      - name: Run Local Npm Registry (Verdaccio) On Linux and macOS
         if: startsWith(matrix.os, 'windows') == false
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         run: docker compose -f verdaccio/docker-compose.yaml up --wait
@@ -98,10 +97,19 @@ jobs:
       - name: Run Local Npm Registry (Verdaccio) On Windows
         if: startsWith(matrix.os, 'windows')
         # Q. Why not using docker?
-        # A. [REF](https://github.com/verdaccio/verdaccio/issues/4808) 
+        # A. [REF](https://github.com/verdaccio/verdaccio/issues/4808)
         run: |
           pnpm add --global forever verdaccio
-          forever start verdaccio --config ./verdaccio/config.yaml        
+          forever start verdaccio --config ./verdaccio/config.yaml
+
+      - name: Health Check Local Npm Registry On Windows
+        if: startsWith(matrix.os, 'windows')
+        uses: jtalk/url-health-check-action@v4
+        with:
+          # Check the following URLs one by one sequentially
+          url: http://localhost:4873
+          retry-delay: 10s
+          max-attempts: 100
 
       - name: Publish To Local NPM Registry
         run: |
@@ -135,7 +143,7 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          run_install: false # For cache      
+          run_install: false # For cache
 
       - name: Set Up Node.js
         uses: actions/setup-node@v3
