@@ -19,9 +19,9 @@ services:
       # test: curl -f http://localhost:4873/-/ping
       # This image does not have curl. So, use wget instead.
       test: wget --spider --quiet http://localhost:4873/-/ping || exit 1
-      interval: 3s       # Time between health checks
-      timeout: 5s        # Time to wait for a health check response
-      retries: 5         # Number of consecutive failures required before marking the service as unhealthy
+      interval: 5s       # Time between health checks
+      timeout: 10s        # Time to wait for a health check response
+      retries: 20         # Number of consecutive failures required before marking the service as unhealthy
       start_period: 5s   # Start period to allow the service to initialize before health checks begin      
 
 networks:
