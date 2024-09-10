@@ -80,11 +80,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --silent --frozen-lockfile --ignore-scripts
 
-      - name: Run Local Npm Registry (Verdaccio) On Linux Or macOS
+      - name: Run Local Npm Registry (Verdaccio)
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
-        if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
-        run: |
-          docker compose -f verdaccio/docker-compose.yaml up --wait
+        run: docker compose -f verdaccio/docker-compose.yaml up --wait
 
       - name: Publish To Local NPM Registry
         run: |
