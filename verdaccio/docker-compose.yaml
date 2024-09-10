@@ -1,0 +1,32 @@
+services:
+  verdaccio:
+    image: verdaccio/verdaccio
+    # Why root? [REF]: https://github.com/verdaccio/verdaccio/issues/483
+    user: root
+    container_name: 'verdaccio'
+    networks:
+      - verdaccio
+    environment:
+      - VERDACCIO_PORT=4873
+    ports:
+      - '4873:4873'
+    volumes:
+      - verdaccio:/verdaccio
+      # `~/.local/verdaccio/config.yaml` is default config file path.
+      # But in the image 'verdaccio/verdaccio', the path is `/verdaccio/conf/config.yaml`
+      - ./config.yaml/:/verdaccio/conf/config.yaml
+    healthcheck:
+      # test: curl -f http://localhost:4873/-/ping
+      # This image does not have curl. So, use wget instead.
+      test: wget --spider --quiet http://localhost:4873/-/ping || exit 1
+      interval: 3s       # Time between health checks
+      timeout: 5s        # Time to wait for a health check response
+      retries: 5         # Number of consecutive failures required before marking the service as unhealthy
+      start_period: 5s   # Start period to allow the service to initialize before health checks begin      
+
+networks:
+  verdaccio:
+    driver: bridge
+
+volumes:
+  verdaccio:

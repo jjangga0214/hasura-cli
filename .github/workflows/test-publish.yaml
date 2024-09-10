@@ -60,7 +60,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16, 18, 20]
+        node-version: [18, 20, 22]
         os: [ubuntu-latest, macOS-latest, windows-latest, windows-2019]
 
     steps:
@@ -84,14 +84,7 @@ jobs:
         # verdaccio is private npm registry. [link](https://github.com/verdaccio/verdaccio/)
         if: startsWith(matrix.os, 'windows') == false # use an operrator "==" as "!startsWith(matrix.os, 'windows')" causes an error
         run: |
-          # trailing `&` detaches process from foreground
-          pnpm verdaccio &
-
-      - name: Run Local Npm Registry (Verdaccio) On Windows
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          pnpm add --global forever
-          forever start node_modules\verdaccio\bin\verdaccio --config ./verdaccio/conf/default.yaml
+          docker compose -f verdaccio/docker-compose.yaml up --wait
 
       - name: Publish To Local NPM Registry
         run: |
@@ -101,8 +94,9 @@ jobs:
           # and can be substituted by setting `_authToken`.
           # By local verdaccio setting(verdaccio/conf/default.yaml), 
           # the _authToken can be any random string,
-          # and anyone can publish hasura-cli.
+          # and verdaccio is configured to allowing anyone to publish `hasura-cli`.
           npm config set //localhost:4873/:_authToken helloworld
+          npm run prepublishOnly
           npm publish --registry http://localhost:4873
 
       - name: Test Installation
@@ -138,7 +132,7 @@ jobs:
       - name: Build and Publish
         # only runs if name of git tag starts with 'v1.' and on branch master
         run: |
-          pnpm build # to prevent a mistake though there is already prepublishOnly lifecycle hook.
+          pnpm run prepublishOnly # to prevent a mistake though there is already prepublishOnly lifecycle hook.
           pnpm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

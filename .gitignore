@@ -5,8 +5,6 @@ junit.xml
 dist
 hasura.dev
 tsconfig.tsbuildinfo
-verdaccio/**/*
-!verdaccio/conf/default.yaml
 
 **/.DS_Store
 # Created by https://www.gitignore.io/api/node,intellij+all,visualstudiocode

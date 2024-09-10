@@ -76,7 +76,7 @@ async function changeVersion(version: string) {
 async function main() {
   const $ = $$({ stdio: 'inherit', cwd: projectRoot })
   const versions = await versionsToPublish()
-  await $`pnpm build`
+  await $`pnpm prepublishOnly`
   for (const version of versions) {
     // `version` of 'v3.alpha.12-19-2023' will be null
     if (!version) {
